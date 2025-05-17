@@ -9,13 +9,13 @@ namespace infrastructure
         public static IServiceCollection AddSemanticKernel(this IServiceCollection services, IConfiguration configuration)
         {
             return services.AddTransient<Kernel>(serviceProvider =>
-            {//AIzaSyB__RPh0X68ufHHPE9OLHnlSq4UDnz1z4c
+            {//https://www.linkedin.com/pulse/mcp-net-c-right-way-hosted-aspnetcore-aspire-what-else-latorre-zs3ff/
                 IKernelBuilder kernelBuilder = Kernel.CreateBuilder();
-#pragma warning disable SKEXP0070 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-                kernelBuilder.Services.AddGoogleAIGeminiChatCompletion("gemini-2.0-flash"
-                    , ""// configuration["GeminiKey"]
-                    , serviceId: "gpt-4-turbo");
-#pragma warning restore SKEXP0070 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.       
+                kernelBuilder.Services.AddAzureOpenAIChatCompletion("gpt-4o",
+                   "https://lighthouse-ai.openai.azure.com/",
+                   "",
+                   "gpt-4o",
+                   "gpt-4o");
                 return kernelBuilder.Build();
             });
         }
