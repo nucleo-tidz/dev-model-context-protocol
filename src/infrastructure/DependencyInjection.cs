@@ -12,7 +12,9 @@ namespace infrastructure
             {//AIzaSyB__RPh0X68ufHHPE9OLHnlSq4UDnz1z4c
                 IKernelBuilder kernelBuilder = Kernel.CreateBuilder();
 #pragma warning disable SKEXP0070 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-                kernelBuilder.Services.AddGoogleAIGeminiChatCompletion("gemini-2.0-flash", configuration["GeminiKey"], serviceId: "gpt-4-turbo");
+                kernelBuilder.Services.AddGoogleAIGeminiChatCompletion("gemini-2.0-flash"
+                    , "AIzaSyB__RPh0X68ufHHPE9OLHnlSq4UDnz1z4c"// configuration["GeminiKey"]
+                    , serviceId: "gpt-4-turbo");
 #pragma warning restore SKEXP0070 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.       
                 return kernelBuilder.Build();
             });
