@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shipment.client", "src\ship
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vessel.api", "src\vessel.api\vessel.api.csproj", "{56E19D86-D10C-4D27-B84B-D57E4888116C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "client", "src\client\client.csproj", "{5E960607-6441-431A-8AFD-2A92FDC77319}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{56E19D86-D10C-4D27-B84B-D57E4888116C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56E19D86-D10C-4D27-B84B-D57E4888116C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56E19D86-D10C-4D27-B84B-D57E4888116C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E960607-6441-431A-8AFD-2A92FDC77319}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E960607-6441-431A-8AFD-2A92FDC77319}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E960607-6441-431A-8AFD-2A92FDC77319}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E960607-6441-431A-8AFD-2A92FDC77319}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
