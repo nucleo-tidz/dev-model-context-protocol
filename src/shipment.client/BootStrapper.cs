@@ -23,10 +23,15 @@ namespace shipment.client
         public async Task Run()
         {
             var clientfactory = new ClientFactory();
-            var client = await (clientfactory.Create());
-            var tools = await client.ListToolsAsync();
+            var containerClient = await (clientfactory.CreateContainerClient());
+            var containerTools = await containerClient.ListToolsAsync();
 
-            _kernel.Plugins.AddFromFunctions("ShipmentContainerTool", tools.Select(_ => _.AsKernelFunction()));
+            _kernel.Plugins.AddFromFunctions("ShipmentContainerTool", containerTools.Select(_ => _.AsKernelFunction()));
+
+            var vesselClient = await (clientfactory.CreateVesselClient());
+            var vesselTools = await vesselClient.ListToolsAsync();
+
+            _kernel.Plugins.AddFromFunctions("VesselContainerTool", vesselTools.Select(_ => _.AsKernelFunction()));
 
             ChatHistory chatHistory = new ChatHistory();
             chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.System, Content = "You are a container shipment agent of a shipment comapny, your role is answer user query regarding conatainer shipment , vessel , and containers  ", });
