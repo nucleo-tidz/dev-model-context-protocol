@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sse.client", "src\sse.clien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mcp.tools", "src\mcp.tools\mcp.tools.csproj", "{A4650B23-9C0D-4FA7-B3B7-D0BCF87A77C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shipment.client", "src\shipment.client\shipment.client.csproj", "{8E984A7D-5F40-4F1D-8EDF-9891DA7D4A6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{A4650B23-9C0D-4FA7-B3B7-D0BCF87A77C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4650B23-9C0D-4FA7-B3B7-D0BCF87A77C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4650B23-9C0D-4FA7-B3B7-D0BCF87A77C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E984A7D-5F40-4F1D-8EDF-9891DA7D4A6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E984A7D-5F40-4F1D-8EDF-9891DA7D4A6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E984A7D-5F40-4F1D-8EDF-9891DA7D4A6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E984A7D-5F40-4F1D-8EDF-9891DA7D4A6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
