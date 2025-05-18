@@ -1,4 +1,4 @@
-﻿namespace server.Tools
+﻿namespace mcp.tools
 {
     using System;
     using System.ComponentModel;
@@ -10,7 +10,7 @@
     public class ShipmentContainerTool
     {
         [McpServerTool, Description("Check the state of shipment contianer")]
-        public static string ContainerState( string containerId)
+        public static string ContainerState(string containerId)
         {
             string[] containerStates = { "Sound", "Damaged" };
             return containerStates[new Random().Next(0, 1)];

@@ -18,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api", "src\api\api.csproj", "{BCE2B301-1BB0-4105-A379-4B9F2B88FE40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sse.client", "src\sse.client\sse.client.csproj", "{34605921-180A-4B5B-B6B0-6FEC3D949D26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mcp.tools", "src\mcp.tools\mcp.tools.csproj", "{A4650B23-9C0D-4FA7-B3B7-D0BCF87A77C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +48,14 @@ Global
 		{BCE2B301-1BB0-4105-A379-4B9F2B88FE40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCE2B301-1BB0-4105-A379-4B9F2B88FE40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCE2B301-1BB0-4105-A379-4B9F2B88FE40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34605921-180A-4B5B-B6B0-6FEC3D949D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34605921-180A-4B5B-B6B0-6FEC3D949D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34605921-180A-4B5B-B6B0-6FEC3D949D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34605921-180A-4B5B-B6B0-6FEC3D949D26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4650B23-9C0D-4FA7-B3B7-D0BCF87A77C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4650B23-9C0D-4FA7-B3B7-D0BCF87A77C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4650B23-9C0D-4FA7-B3B7-D0BCF87A77C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4650B23-9C0D-4FA7-B3B7-D0BCF87A77C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
