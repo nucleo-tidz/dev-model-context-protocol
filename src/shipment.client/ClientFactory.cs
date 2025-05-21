@@ -25,5 +25,16 @@
                  );
             return await McpClientFactory.CreateAsync(clientTransport);
         }
+
+        public async Task<IMcpClient> CreateBookingClient()
+        {
+            var clientTransport = new SseClientTransport(
+                     new SseClientTransportOptions
+                     {
+                         Endpoint = new Uri("https://localhost:7044/sse")
+                     }
+                 );
+            return await McpClientFactory.CreateAsync(clientTransport);
+        }
     }
 }
