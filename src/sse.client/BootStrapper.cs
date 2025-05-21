@@ -7,57 +7,33 @@ using ModelContextProtocol.Client;
 
 namespace sse.client
 {
-    using System.Text;
-    using System.Threading.Tasks;
-
     using Microsoft.SemanticKernel;
-    using Microsoft.SemanticKernel.ChatCompletion;
     using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 
     using ModelContextProtocol.Client;
 
-    public class BootStrapper : IBootStrapper
+    public class BootStrapper(Kernel kernel) : IBootStrapper
     {
-        Kernel _kernel;
-        private readonly IChatCompletionService _chatCompletionService;
-        public BootStrapper(Kernel kernel)
-        {
-            this._kernel = kernel;
-            this._chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
-        }
+
         public async Task Run()
         {
             var clientfactory = new ClientFactory();
-            var containerClient = await (clientfactory.CreateContainerClient());
-            var containerTools = await containerClient.ListToolsAsync();
+            var client = await (clientfactory.Create());
+       
+            var tools = await client.ListToolsAsync();
 
-            _kernel.Plugins.AddFromFunctions("ShipmentContainerTool", containerTools.Select(_ => _.AsKernelFunction()));
 
-            var vesselClient = await (clientfactory.CreateVesselClient());
-            var vesselTools = await vesselClient.ListToolsAsync();
+            kernel.Plugins.AddFromFunctions("ShipmentContainerTool", tools.Select(_ => _.AsKernelFunction()));
+                      var functionChoiceBehaviorOptions = new FunctionChoiceBehaviorOptions();
 
-            _kernel.Plugins.AddFromFunctions("VesselContainerTool", vesselTools.Select(_ => _.AsKernelFunction()));
-
-            ChatHistory chatHistory = new ChatHistory();
-            chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.System, Content = "You are a container shipment agent of a shipment comapny, your role is answer user query regarding conatainer shipment , vessel , and containers  ", });
-            Console.WriteLine("Ask Me");
-            while (true)
+            functionChoiceBehaviorOptions.RetainArgumentTypes = true;           
+            AzureOpenAIPromptExecutionSettings azureOpenAIPromptExecutionSettings = new AzureOpenAIPromptExecutionSettings()
             {
-                string query = Console.ReadLine();
-                chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.User, Content = query });
+                Temperature = 0,
+                FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(options: functionChoiceBehaviorOptions),
+            };
 
-
-                ChatMessageContent chatMessageContent = await _chatCompletionService.GetChatMessageContentAsync(chatHistory, new AzureOpenAIPromptExecutionSettings()
-                {
-                    Temperature = 0,
-                    FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(options: new FunctionChoiceBehaviorOptions()
-                    {
-                        RetainArgumentTypes = true
-                    })
-                }, _kernel);
-                Console.WriteLine(chatMessageContent.Content);
-                chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.Assistant, Content = chatMessageContent.Content });
-            }
+            var result = await kernel.InvokePromptAsync("What is the state of container with ID AHM1345 ?", new(azureOpenAIPromptExecutionSettings));
         }
     }
 
