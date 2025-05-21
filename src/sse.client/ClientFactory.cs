@@ -4,12 +4,23 @@
     using ModelContextProtocol.Client;
     public class ClientFactory
     {
-        public async Task<IMcpClient> Create()
+        public async Task<IMcpClient> CreateContainerClient()
         {
             var clientTransport = new SseClientTransport(
                      new SseClientTransportOptions
                      {
                          Endpoint = new Uri("https://localhost:7196/sse")
+                     }
+                 );
+            return await McpClientFactory.CreateAsync(clientTransport);
+        }
+
+        public async Task<IMcpClient> CreateVesselClient()
+        {
+            var clientTransport = new SseClientTransport(
+                     new SseClientTransportOptions
+                     {
+                         Endpoint = new Uri("https://localhost:7289/sse")
                      }
                  );
             return await McpClientFactory.CreateAsync(clientTransport);
