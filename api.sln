@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api", "src\api\api.csproj", "{BCE2B301-1BB0-4105-A379-4B9F2B88FE40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "function.call", "src\sse.client\function.call.csproj", "{34605921-180A-4B5B-B6B0-6FEC3D949D26}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "function.call", "src\function.call\function.call.csproj", "{34605921-180A-4B5B-B6B0-6FEC3D949D26}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mcp.tools", "src\mcp.tools\mcp.tools.csproj", "{A4650B23-9C0D-4FA7-B3B7-D0BCF87A77C4}"
 EndProject
