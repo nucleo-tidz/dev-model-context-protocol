@@ -1,16 +1,10 @@
 ﻿#pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 #pragma warning disable IDE0090 // Use 'new(...)'
 #pragma warning disable SKEXP0070 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-using client;
-using Microsoft.SemanticKernel.Connectors.Google;
-using Microsoft.SemanticKernel;
-using ModelContextProtocol.Client;
-
 namespace client
 {
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
-    using Microsoft.SemanticKernel.Connectors.Google;
 
     using ModelContextProtocol.Client;
 
@@ -21,14 +15,14 @@ namespace client
         {
             var clientfactory = new ClientFactory();
             var client = await (clientfactory.Create());
-       
+
             var tools = await client.ListToolsAsync();
 
 
             kernel.Plugins.AddFromFunctions("ShipmentContainerTool", tools.Select(_ => _.AsKernelFunction()));
-                      var functionChoiceBehaviorOptions = new FunctionChoiceBehaviorOptions();
+            var functionChoiceBehaviorOptions = new FunctionChoiceBehaviorOptions();
 
-            functionChoiceBehaviorOptions.RetainArgumentTypes = true;           
+            functionChoiceBehaviorOptions.RetainArgumentTypes = true;
             AzureOpenAIPromptExecutionSettings azureOpenAIPromptExecutionSettings = new AzureOpenAIPromptExecutionSettings()
             {
                 Temperature = 0,

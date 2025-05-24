@@ -1,18 +1,12 @@
 ﻿#pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 #pragma warning disable IDE0090 // Use 'new(...)'
 #pragma warning disable SKEXP0070 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-using Microsoft.SemanticKernel;
-
-using ModelContextProtocol.Client;
-
 namespace sse.client
 {
     using function.call;
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.ChatCompletion;
     using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
-    using Microsoft.SemanticKernel.Connectors.OpenAI;
-    using ModelContextProtocol.Client;
 
     public class BootStrapper : IBootStrapper
     {
@@ -25,7 +19,7 @@ namespace sse.client
         }
         public async Task Run()
         {
-           _kernel.ImportPluginFromType<RepositionPlugin>();
+            _kernel.ImportPluginFromType<RepositionPlugin>();
 
             ChatHistory chatHistory = new ChatHistory();
             chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.System, Content = "You are a container shipment agent of a shipment company, your role is answer user query regarding container repositioning plan  ", });
@@ -39,12 +33,12 @@ namespace sse.client
                 ChatMessageContent chatMessageContent = await _chatCompletionService.GetChatMessageContentAsync(chatHistory, new AzureOpenAIPromptExecutionSettings()
                 {
                     Temperature = 0,
-                    FunctionChoiceBehavior= FunctionChoiceBehavior.Auto()
+                    FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
                 }, _kernel);
                 Console.WriteLine(chatMessageContent.Content);
                 chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.Assistant, Content = chatMessageContent.Content });
             }
-             
+
         }
     }
 

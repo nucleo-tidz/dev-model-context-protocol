@@ -3,14 +3,11 @@
 #pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 namespace shipment.client
 {
-    using System.Text;
-    using System.Threading.Tasks;
-
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.ChatCompletion;
     using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
-
     using ModelContextProtocol.Client;
+    using System.Threading.Tasks;
 
     public class BootStrapper : IBootStrapper
     {
@@ -56,7 +53,7 @@ namespace shipment.client
                 }, _kernel);
                 Console.WriteLine(chatMessageContent.Content);
                 chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.Assistant, Content = chatMessageContent.Content });
-            }        
+            }
         }
     }
 }

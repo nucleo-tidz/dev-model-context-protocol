@@ -1,10 +1,8 @@
 ﻿namespace mcp.tools
 {
+    using ModelContextProtocol.Server;
     using System;
     using System.ComponentModel;
-    using System.Linq;
-
-    using ModelContextProtocol.Server;
 
     [McpServerToolType]
     public class VesselTool

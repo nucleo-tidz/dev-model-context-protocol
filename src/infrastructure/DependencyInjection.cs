@@ -19,6 +19,5 @@ namespace infrastructure
                 return kernelBuilder.Build();
             });
         }
-
     }
 }

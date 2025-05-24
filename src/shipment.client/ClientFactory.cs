@@ -1,7 +1,7 @@
 ﻿namespace shipment.client
 {
-    using System.Threading.Tasks;
     using ModelContextProtocol.Client;
+    using System.Threading.Tasks;
     public class ClientFactory
     {
         public async Task<IMcpClient> CreateContainerClient()

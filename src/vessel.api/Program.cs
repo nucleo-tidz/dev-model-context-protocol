@@ -1,5 +1,3 @@
-using System.Reflection;
-
 using mcp.tools;
 
 var builder = WebApplication.CreateBuilder(args);

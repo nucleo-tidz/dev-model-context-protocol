@@ -1,9 +1,8 @@
 ﻿namespace mcp.tools
 {
+    using ModelContextProtocol.Server;
     using System;
     using System.ComponentModel;
-
-    using ModelContextProtocol.Server;
 
     [McpServerToolType]
     public class ShipmentContainerTool
