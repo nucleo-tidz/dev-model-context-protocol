@@ -3,8 +3,6 @@ using System.Reflection;
 using mcp.tools;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
-
 builder.Services.AddMcpServer().WithHttpTransport().WithTools<BookingContainerTool>();
 var app = builder.Build();
 app.UseHttpsRedirection();
