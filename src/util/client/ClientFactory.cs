@@ -12,7 +12,7 @@
             {
                 Name = "nucleotidz-mcp-server",                
                 Command = "dotnet",
-                Arguments = ["run", "--project", "C:\\Workspace\\nucleo-tidz\\dev-model-context-protocol\\src\\server", "--no-build"],
+                Arguments = ["run", "--project", "C:\\Personal-Workspace\\MCP\\src\\util\\server", "--no-build"],
                 
             });
             return await McpClientFactory.CreateAsync(clientTransport);
