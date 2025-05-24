@@ -17,7 +17,8 @@ namespace shipment.client
         Kernel _kernel;
         private readonly IChatCompletionService _chatCompletionService;
         public BootStrapper(Kernel kernel)
-        {this._kernel = kernel;
+        {
+            this._kernel = kernel;
             this._chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
         }
         public async Task Run()
