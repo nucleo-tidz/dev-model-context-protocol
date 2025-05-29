@@ -20,6 +20,7 @@ namespace shipment.agents.Capacity
                 Name = nameof(CapacityAgent),
                 Instructions = @" You are an AI agent responsible for finding the space left on a vessel.You will be provided with a vessel id from the Vessel Agent",
                 Kernel = agentKernel,
+                Description= "an AI agent responsible for finding the space left on a vessel",
 
                 Arguments = new KernelArguments(new PromptExecutionSettings() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(options: new() { RetainArgumentTypes = true }) }),
             };

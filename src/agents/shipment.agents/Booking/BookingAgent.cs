@@ -26,7 +26,7 @@ namespace shipment.agents.Capacity
                                   Using this information, generate a valid booking for the container on the specified vessel between the given origin and destination.
                                 ",
                 Kernel = agentKernel,
-
+                Description= "AI agent tasked with creating a shipping container booking",
                 Arguments = new KernelArguments(new PromptExecutionSettings() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(options: new() { RetainArgumentTypes = true }) }),
             };
         }
