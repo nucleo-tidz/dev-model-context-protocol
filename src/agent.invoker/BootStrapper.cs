@@ -17,23 +17,6 @@
         {
             _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
         }
-
-#if false
-        public async Task Run()
-        {
-            var emailAgent = new EmailAgent(_kernel).Create();
-            ChatHistory chatHistory = new ChatHistory();
-            while (true)
-            {
-                string query = Console.ReadLine();
-                chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.User, Content = query });
-                await foreach (var message in emailAgent.InvokeAsync(chatHistory))
-                {
-                     
-                }
-            }
-        }
-#endif
         public async Task Run()
         {
           
