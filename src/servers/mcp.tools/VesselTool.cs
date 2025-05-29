@@ -1,5 +1,6 @@
 ﻿namespace mcp.tools
 {
+    using mcp.tools.Model;
     using ModelContextProtocol.Server;
     using System;
     using System.ComponentModel;
@@ -7,11 +8,14 @@
     [McpServerToolType]
     public class VesselTool
     {
-        [McpServerTool, Description("How much space is left on the vessel")]
-        public static string GetVesselLegs(string vesselId)
+       
+        [McpServerTool, Description("Find vessel between origin and destination")]
+        public  VeeselDetail GetVessel(string origin , string destination)
         {
-            string[] VesselLegs = { "100 TEU", "200 TEU", "300 TEU", "400 TEU" };
-            return VesselLegs[new Random().Next(0, 4)];
+            if (destination == "Bangalore")
+                return null;
+            return
+                new VeeselDetail { VesselId="VE-1234", VesselName="Marina",ArrivalDate = DateTime.Now.AddDays(2), DepartureDate = DateTime.Now.AddDays(15) };
         }
     }
 }

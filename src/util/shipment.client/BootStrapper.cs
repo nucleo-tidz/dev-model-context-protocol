@@ -34,6 +34,10 @@ namespace shipment.client
             var bookingTools = await bookingClient.ListToolsAsync();
             _kernel.Plugins.AddFromFunctions("BookingTool", bookingTools.Select(_ => _.AsKernelFunction()));
 
+            var capacityClient = await (clientfactory.CreateCapacityClient());
+            var capacityTools = await capacityClient.ListToolsAsync();
+            _kernel.Plugins.AddFromFunctions("CapacityTool", capacityTools.Select(_ => _.AsKernelFunction()));
+
             ChatHistory chatHistory = new ChatHistory();
             chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.System, Content = "You are a container shipment agent of a shipment comapny, your role is answer user query regarding conatainer shipment , vessel , and containers  ", });
             Console.WriteLine("Ask Me");

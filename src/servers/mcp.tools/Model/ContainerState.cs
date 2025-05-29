@@ -1,4 +1,4 @@
-﻿namespace mcp.tools
+﻿namespace mcp.tools.Model
 {
     public class ContainerStateModel
     {

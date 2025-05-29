@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vessel.api", "src\servers\v
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mcp.tools", "src\servers\mcp.tools\mcp.tools.csproj", "{B37F1B30-73E5-F308-C09D-FC63143C9A16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "capacity.api", "src\servers\capacity.api\capacity.api.csproj", "{E3899B15-3344-47F9-B8FE-B1ADCB8EBF32}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,10 @@ Global
 		{B37F1B30-73E5-F308-C09D-FC63143C9A16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B37F1B30-73E5-F308-C09D-FC63143C9A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B37F1B30-73E5-F308-C09D-FC63143C9A16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3899B15-3344-47F9-B8FE-B1ADCB8EBF32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3899B15-3344-47F9-B8FE-B1ADCB8EBF32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3899B15-3344-47F9-B8FE-B1ADCB8EBF32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3899B15-3344-47F9-B8FE-B1ADCB8EBF32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		{BEB749E2-E422-BDA1-2022-8265FAE884C1} = {8AB3970C-A07F-4356-829B-5CFE948E9B71}
 		{A85F90B9-5AFF-7E1F-7C6A-64D75EC3371C} = {8AB3970C-A07F-4356-829B-5CFE948E9B71}
 		{B37F1B30-73E5-F308-C09D-FC63143C9A16} = {8AB3970C-A07F-4356-829B-5CFE948E9B71}
+		{E3899B15-3344-47F9-B8FE-B1ADCB8EBF32} = {8AB3970C-A07F-4356-829B-5CFE948E9B71}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ADA82D92-6241-4E70-9A3E-F484708B4B51}
