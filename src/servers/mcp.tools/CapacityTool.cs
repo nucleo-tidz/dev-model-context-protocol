@@ -1,14 +1,12 @@
-﻿namespace mcp.tools
-{
-    using ModelContextProtocol.Server;
-    using System;
-    using System.ComponentModel;
+﻿using ModelContextProtocol.Server;
+using System.ComponentModel;
 
-    [McpServerToolType]
-    public class VesselTool
+namespace mcp.tools
+{
+    public class CapacityTool
     {
         [McpServerTool, Description("How much space is left on the vessel")]
-        public static string GetVesselLegs(string vesselId)
+        public string GetVesselLegs(string vesselId)
         {
             string[] VesselLegs = { "100 TEU", "200 TEU", "300 TEU", "400 TEU" };
             return VesselLegs[new Random().Next(0, 4)];

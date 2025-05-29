@@ -36,5 +36,15 @@
                  );
             return await McpClientFactory.CreateAsync(clientTransport);
         }
+        public async Task<IMcpClient> CreateCapacityClient()
+        {
+            var clientTransport = new SseClientTransport(
+                     new SseClientTransportOptions
+                     {
+                         Endpoint = new Uri("https://localhost:7061/sse")
+                     }
+                 );
+            return await McpClientFactory.CreateAsync(clientTransport);
+        }
     }
 }

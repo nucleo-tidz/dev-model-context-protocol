@@ -11,9 +11,8 @@
     <PackageReference Include="ModelContextProtocol.AspNetCore" Version="0.2.0-preview.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\mcp.tools\mcp.tools.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\mcp.tools\mcp.tools.csproj" />
+	</ItemGroup>
 
 </Project>
