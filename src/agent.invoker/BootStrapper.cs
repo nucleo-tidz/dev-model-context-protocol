@@ -1,13 +1,19 @@
 ﻿namespace client
 {
+    using Microsoft.SemanticKernel;
+    using Microsoft.SemanticKernel.Agents.Orchestration;
+    using Microsoft.SemanticKernel.Agents.Orchestration;
+    using Microsoft.SemanticKernel.Agents.Orchestration.GroupChat;
+    using Microsoft.SemanticKernel.Agents.Orchestration.GroupChat;
+    using Microsoft.SemanticKernel.Agents.Runtime.InProcess;
+    using Microsoft.SemanticKernel.ChatCompletion;
+    using shipment.agents.Group;
+    using shipment.agents.Orchestrator;
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Threading;
     using System.Threading.Tasks;
-
-    using shipment.agents.Group;
-
-    using Microsoft.SemanticKernel;
-    using Microsoft.SemanticKernel.ChatCompletion;
+    using static System.Net.Mime.MediaTypeNames;
 
     [Experimental("SKEXP0110")]
     public class BootStrapper : IBootStrapper
@@ -17,9 +23,35 @@
         {
             _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
         }
-        public async Task Run()
+        public async Task Run(bool useOrchestrator = false)
         {
-          
+            if (!useOrchestrator)
+            {
+                await StartGroupChat();
+            }
+            else
+            {
+                await StartGroupChatWithOrchestrator();
+            }
+        }
+        public ValueTask responseCallback(ChatMessageContent response)
+        {
+            Console.WriteLine(response.Content);
+            return ValueTask.CompletedTask;
+        }
+        public async Task StartGroupChatWithOrchestrator()
+        {
+
+            InProcessRuntime runtime = new InProcessRuntime();
+            await runtime.StartAsync();
+            GroupAgent groupAgent = new GroupAgent();
+            var orchestration = groupAgent.CreateGroupChat(_kernel, responseCallback);
+            OrchestrationResult<string> result = await orchestration.InvokeAsync("Create a booking for 20RY container from New Delhi to Chennai ", runtime);
+            await result.GetValueAsync();
+            await runtime.RunUntilIdleAsync();
+        }
+        public async Task StartGroupChat()
+        {
             while (true)
             {
                 GroupAgent groupAgent = new GroupAgent();

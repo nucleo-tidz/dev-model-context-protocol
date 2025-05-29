@@ -15,7 +15,7 @@ namespace shipment.agents.Vessel
             Kernel agentKernel = kernel.Clone();
             var vesselClient = clientFactory.CreateVesselClient().GetAwaiter().GetResult();
             var vesselTools = vesselClient.ListToolsAsync().GetAwaiter().GetResult();
-            agentKernel.Plugins.AddFromFunctions("VesselContainerTool", vesselTools.Select(_ => _.AsKernelFunction())); 
+            agentKernel.Plugins.AddFromFunctions("VesselContainerTool", vesselTools.Select(_ => _.AsKernelFunction()));
             return new ChatCompletionAgent()
             {
                 Name = nameof(VesselAgent),
@@ -24,7 +24,9 @@ namespace shipment.agents.Vessel
                                Your workflow includes one steps:
                                1. Find vessel between origin and destination city name.",
                 Kernel = agentKernel,
-             
+                Description = " AI agent responsible for searching vessel between origin and destination",
+
+
                 Arguments = new KernelArguments(new PromptExecutionSettings() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(options: new() { RetainArgumentTypes = true }) }),
             };
         }
