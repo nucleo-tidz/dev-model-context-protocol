@@ -36,11 +36,12 @@
 #endif
         public async Task Run()
         {
-            GroupAgent groupAgent = new GroupAgent();
-            var agentGroupChat = groupAgent.CreateAgentGroupChat(_kernel);
-
+          
             while (true)
             {
+                GroupAgent groupAgent = new GroupAgent();
+                var agentGroupChat = groupAgent.CreateAgentGroupChat(_kernel);
+
                 Console.WriteLine("give the command");
                 string query = Console.ReadLine();
                 agentGroupChat.AddChatMessage(new ChatMessageContent(AuthorRole.User, query));
