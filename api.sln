@@ -12,13 +12,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api", "src\api\api.csproj", "{BCE2B301-1BB0-4105-A379-4B9F2B88FE40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api", "src\servers\api\api.csproj", "{BCE2B301-1BB0-4105-A379-4B9F2B88FE40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mcp.tools", "src\mcp.tools\mcp.tools.csproj", "{A4650B23-9C0D-4FA7-B3B7-D0BCF87A77C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vessel.api", "src\vessel.api\vessel.api.csproj", "{56E19D86-D10C-4D27-B84B-D57E4888116C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vessel.api", "src\servers\vessel.api\vessel.api.csproj", "{56E19D86-D10C-4D27-B84B-D57E4888116C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "booking.api", "src\booking.api\booking.api.csproj", "{F3494F78-57E2-486B-B497-1694161AFDED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "booking.api", "src\servers\booking.api\booking.api.csproj", "{F3494F78-57E2-486B-B497-1694161AFDED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "util", "util", "{0E37D0EE-FAF4-4673-847F-A8BDB0A8371B}"
 EndProject
@@ -29,6 +29,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "client", "src\util\client\client.csproj", "{FED7909A-8B0D-4574-8E89-7898EB297BCD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shipment.client", "src\util\shipment.client\shipment.client.csproj", "{56814DEC-56B5-4F40-9A46-60070193B0F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "servers", "servers", "{8AB3970C-A07F-4356-829B-5CFE948E9B71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
