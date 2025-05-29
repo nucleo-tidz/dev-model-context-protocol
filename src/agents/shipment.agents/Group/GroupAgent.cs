@@ -28,7 +28,7 @@
             };
         }
 
-        public GroupChatOrchestration CreateGroupChat(Kernel kernel, OrchestrationResponseCallback responseCallback)
+        public GroupChatOrchestration CreateAgentGroupChat(Kernel kernel, OrchestrationResponseCallback responseCallback)
         {
             
             var vesselAgent = new VesselAgent().Create(kernel);
