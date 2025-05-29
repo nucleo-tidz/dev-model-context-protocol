@@ -26,8 +26,15 @@ namespace shipment.agents.Orchestrator
         public record TerminationResponse(string reason, bool shouldTerminate);
         public record SelectionResponse(string agentName,string reason);
         public static string AgentTermination =$"""
-             Based on on the history provided check if a  vessel information like vessel id , name etc is present or not , 
-            if the vessel information is present respond false otherwise true , DO NOT assume that vessel information is wrong or fictious if a vessel id is present 
+            You are an Agent Terminator, responsible for deciding whether an active agent should be terminated based on the container booking context.
+            Use the chat history to assess the current state and follow these rules to make your decision:
+            -Only apply termination logic if the agent has already been executed.
+              do not evaluate whether vessel information exists unless the {VesselAgentName} has already run ,.
+              do not evaluate whether capacity  exists unless the {CapacityAgentName} has already run .
+            - Terminate the agent If the vessel information is missing and {VesselAgentName} has already run , DO NOT assume that vessel information is wrong or fictious if a vessel id is present 
+            - Terminate the agent if the vessel remaining capacity is 0 TEU and  {CapacityAgentName} has already run., if remaining capacity is more than 0 TEU like 100 TEU DO NOT Terminate 
+
+             Use the chat history to understand the current state and make an informed decision ,To terminate the agent respond  true along with your reason to terminate 
             """;
 
         public static string AgentSelection (string participants) =>
@@ -83,6 +90,7 @@ namespace shipment.agents.Orchestrator
         }
         public override ValueTask<GroupChatManagerResult<bool>> ShouldTerminate(ChatHistory history, CancellationToken cancellationToken = default)
         {
+            
             bool shouldEnd = false;
             string terminationReason=string.Empty;
             var baseResult = base.ShouldTerminate(history, cancellationToken).Result;
@@ -90,18 +98,14 @@ namespace shipment.agents.Orchestrator
             {
                 return ValueTask.FromResult(baseResult);
             }
-            if (history.Any(_ => _.AuthorName == VesselAgentName))
-            {
-                ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentTermination)];
+           ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentTermination)];
                 AzureOpenAIPromptExecutionSettings executionSettings = new() { ResponseFormat = typeof(TerminationResponse) };
                 var result = chatCompletion.GetChatMessageContentsAsync(request, executionSettings, kernel: null, cancellationToken).GetAwaiter().GetResult();
                 var response = JsonSerializer.Deserialize<TerminationResponse>(result[0].Content.ToString());
-                if (response.shouldTerminate)
-                {
-                    shouldEnd = true;
-                    terminationReason = response.reason;
-                }
-            }
+                shouldEnd = response.shouldTerminate;
+                terminationReason = response.reason;
+            Task.Delay(10000).GetAwaiter().GetResult();
+
             return ValueTask.FromResult(new GroupChatManagerResult<bool>(shouldEnd) { Reason = terminationReason });
         }
     }

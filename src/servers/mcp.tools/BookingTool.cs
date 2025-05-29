@@ -9,7 +9,7 @@ namespace mcp.tools
         [McpServerTool, Description("Create booking from origin to destination for container")]
         public  string Create(string containerType, string from, string To)
         {
-            return "Booking Created";
+            return "Booking Created with Booking ID BE-9891729137";
         }
 
 

@@ -46,7 +46,7 @@
             await runtime.StartAsync();
             GroupAgent groupAgent = new GroupAgent();
             var orchestration = groupAgent.CreateAgentGroupChat(_kernel, responseCallback);
-            OrchestrationResult<string> result = await orchestration.InvokeAsync("Create a booking for 20RY container from New Delhi to Chennai ", runtime);
+            OrchestrationResult<string> result = await orchestration.InvokeAsync("Create a booking for 20RY container from New Delhi to Copenhagen ", runtime);
             await result.GetValueAsync();
             await runtime.RunUntilIdleAsync();
             Console.WriteLine( "Finish");
