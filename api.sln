@@ -34,6 +34,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mcp.tools", "src\servers\mc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "capacity.api", "src\servers\capacity.api\capacity.api.csproj", "{E3899B15-3344-47F9-B8FE-B1ADCB8EBF32}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "agents", "agents", "{3FA15D95-F498-4CE7-935F-C571B90337F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shipment.agents", "src\agents\shipment.agents\shipment.agents.csproj", "{3403D107-120B-49E9-8DF6-298266918CDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "agent.invoker", "src\agent.invoker\agent.invoker.csproj", "{82EC2376-FAF5-42D6-9CFA-B8267D4C94A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +90,14 @@ Global
 		{E3899B15-3344-47F9-B8FE-B1ADCB8EBF32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3899B15-3344-47F9-B8FE-B1ADCB8EBF32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3899B15-3344-47F9-B8FE-B1ADCB8EBF32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3403D107-120B-49E9-8DF6-298266918CDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3403D107-120B-49E9-8DF6-298266918CDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3403D107-120B-49E9-8DF6-298266918CDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3403D107-120B-49E9-8DF6-298266918CDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82EC2376-FAF5-42D6-9CFA-B8267D4C94A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82EC2376-FAF5-42D6-9CFA-B8267D4C94A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82EC2376-FAF5-42D6-9CFA-B8267D4C94A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82EC2376-FAF5-42D6-9CFA-B8267D4C94A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +112,7 @@ Global
 		{A85F90B9-5AFF-7E1F-7C6A-64D75EC3371C} = {8AB3970C-A07F-4356-829B-5CFE948E9B71}
 		{B37F1B30-73E5-F308-C09D-FC63143C9A16} = {8AB3970C-A07F-4356-829B-5CFE948E9B71}
 		{E3899B15-3344-47F9-B8FE-B1ADCB8EBF32} = {8AB3970C-A07F-4356-829B-5CFE948E9B71}
+		{3403D107-120B-49E9-8DF6-298266918CDB} = {3FA15D95-F498-4CE7-935F-C571B90337F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ADA82D92-6241-4E70-9A3E-F484708B4B51}
