@@ -23,10 +23,10 @@ namespace shipment.agents.Capacity
                                   - Vessel ID
                                   - Origin City
                                   - Destination City
-                                  Using this information, generate a valid booking for the container on the specified vessel between the given origin and destination.
+                                  Using this information, generate a valid booking for the container on the specified vessel between the given origin and destination.Ensure vessel has enough capacity to make the booking
                                 ",
                 Kernel = agentKernel,
-                Description= "AI agent tasked with creating a shipping container booking",
+                Description= "AI agent which creates a shipment booking on vessels",
                 Arguments = new KernelArguments(new PromptExecutionSettings() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(options: new() { RetainArgumentTypes = true }) }),
             };
         }

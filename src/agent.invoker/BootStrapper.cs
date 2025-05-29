@@ -49,6 +49,8 @@
             OrchestrationResult<string> result = await orchestration.InvokeAsync("Create a booking for 20RY container from New Delhi to Chennai ", runtime);
             await result.GetValueAsync();
             await runtime.RunUntilIdleAsync();
+            Console.WriteLine( "Finish");
+            Console.ReadLine();
         }
         public async Task StartGroupChat()
         {

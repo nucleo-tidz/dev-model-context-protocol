@@ -24,17 +24,40 @@ namespace shipment.agents.Orchestrator
         private const string CapacityAgentName = nameof(CapacityAgent);
         private const string BookingAgentName = nameof(BookingAgent);
         public record TerminationResponse(string reason, bool shouldTerminate);
-        public static string VesselTermination =$"""
-             Based on on the history provided check if a valid vessel information like vessel id , name etc is present or not , 
-            if the vessel information is present respond false otherwise true 
+        public record SelectionResponse(string agentName,string reason);
+        public static string AgentTermination =$"""
+             Based on on the history provided check if a  vessel information like vessel id , name etc is present or not , 
+            if the vessel information is present respond false otherwise true , DO NOT assume that vessel information is wrong or fictious if a vessel id is present 
             """;
+
+        public static string AgentSelection (string participants) =>
+                $"""
+                You are an Agent Selector, responsible for choosing the most appropriate agent to handle the next step in a container booking workflow. Use the chat history to understand the current state and make an informed decision.
+                Avoid unnecessary agent selection — for example, do not select the Capacity  Agent if vessel capacity has already been confirmed. The required steps in a typical container booking process are:
+                - Find a Vessel
+                -  Check Vessel Capacity
+                - Create Shipment Booking on Vessel
+
+                Your task is to choose the next best agent to continue the process based on what's already been completed.
+
+                Below are the available agents with their descriptions:
+                {participants}
+                Please respond with only  name of the Agent along with your reason to select the agent.
+                """;
         public override ValueTask<GroupChatManagerResult<string>> FilterResults(ChatHistory history, CancellationToken cancellationToken = default)
         {
+           
+
             GroupChatManagerResult<string> result = new(history.LastOrDefault()?.Content ?? string.Empty) { Reason = "Default result filter provides the final chat message." };
             return ValueTask.FromResult(result);
         }
         public override ValueTask<GroupChatManagerResult<string>> SelectNextAgent(ChatHistory history, GroupChatTeam team, CancellationToken cancellationToken = default)
         {
+            ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentSelection(team.FormatList()))];
+            AzureOpenAIPromptExecutionSettings executionSettings = new() { ResponseFormat = typeof(SelectionResponse) };
+            var result = chatCompletion.GetChatMessageContentsAsync(request, executionSettings, kernel: null, cancellationToken).GetAwaiter().GetResult();
+            var response = JsonSerializer.Deserialize<SelectionResponse>(result[0].Content.ToString());
+#if false
             string? lastAgent = history.LastOrDefault()?.AuthorName;
             if (string.IsNullOrWhiteSpace(lastAgent))
             {
@@ -48,6 +71,9 @@ namespace shipment.agents.Orchestrator
             {
                 return ValueTask.FromResult(new GroupChatManagerResult<string>(BookingAgentName) { Reason = "Found capacity Selected booking agent" });
             }
+#endif
+            return ValueTask.FromResult(new GroupChatManagerResult<string>(response.agentName) { Reason = response.reason });
+
         }
 
         public override ValueTask<GroupChatManagerResult<bool>> ShouldRequestUserInput(ChatHistory history, CancellationToken cancellationToken = default)
@@ -66,7 +92,7 @@ namespace shipment.agents.Orchestrator
             }
             if (history.Any(_ => _.AuthorName == VesselAgentName))
             {
-                ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, VesselTermination)];
+                ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentTermination)];
                 AzureOpenAIPromptExecutionSettings executionSettings = new() { ResponseFormat = typeof(TerminationResponse) };
                 var result = chatCompletion.GetChatMessageContentsAsync(request, executionSettings, kernel: null, cancellationToken).GetAwaiter().GetResult();
                 var response = JsonSerializer.Deserialize<TerminationResponse>(result[0].Content.ToString());

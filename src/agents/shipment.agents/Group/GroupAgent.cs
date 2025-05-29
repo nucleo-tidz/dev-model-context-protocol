@@ -5,6 +5,7 @@
     using Microsoft.SemanticKernel.Agents;
     using Microsoft.SemanticKernel.Agents.Orchestration;
     using Microsoft.SemanticKernel.Agents.Orchestration.GroupChat;
+    using Microsoft.SemanticKernel.Agents.Orchestration.Sequential;
     using Microsoft.SemanticKernel.ChatCompletion;
     using shipment.agents.Capacity;
     using shipment.agents.Vessel;
@@ -35,10 +36,10 @@
             var capacityAgent = new CapacityAgent().Create(kernel);
             var bookingAgent = new BookingAgent().Create(kernel);
             GroupChatOrchestration orchestration = new GroupChatOrchestration(
-            new ShipmnetGroupManager(kernel.GetRequiredService<IChatCompletionService>()) { MaximumInvocationCount = 3 }, vesselAgent, capacityAgent , bookingAgent)
+            new ShipmnetGroupManager(kernel.GetRequiredService<IChatCompletionService>()) { MaximumInvocationCount = 4 }, vesselAgent, capacityAgent , bookingAgent)
             {
                 ResponseCallback = responseCallback,
-            };
+            };         
             return orchestration;
 
         }
