@@ -39,6 +39,7 @@
             new ShipmnetGroupManager(kernel.GetRequiredService<IChatCompletionService>()) { MaximumInvocationCount = 4 }, vesselAgent, capacityAgent , bookingAgent)
             {
                 ResponseCallback = responseCallback,
+
             };         
             return orchestration;
 

@@ -11,7 +11,5 @@ namespace mcp.tools
         {
             return "Booking Created with Booking ID BE-9891729137";
         }
-
-
     }
 }

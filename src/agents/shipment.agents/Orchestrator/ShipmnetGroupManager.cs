@@ -28,7 +28,7 @@ namespace shipment.agents.Orchestrator
         public static string AgentTermination =$"""
             You are an Agent Terminator, responsible for deciding whether an active agent should be terminated based on the container booking context.
             Use the chat history to assess the current state and follow these rules to make your decision:
-            -Only apply termination logic if the agent has already been executed.
+            -Only apply termination logic if the agent has already been executed use AuthorName propert of chat history to find which agent has run.
               do not evaluate whether vessel information exists unless the {VesselAgentName} has already run ,.
               do not evaluate whether capacity  exists unless the {CapacityAgentName} has already run .
             - Terminate the agent If the vessel information is missing and {VesselAgentName} has already run , DO NOT assume that vessel information is wrong or fictious if a vessel id is present 
@@ -61,9 +61,7 @@ namespace shipment.agents.Orchestrator
         public override ValueTask<GroupChatManagerResult<string>> SelectNextAgent(ChatHistory history, GroupChatTeam team, CancellationToken cancellationToken = default)
         {
             ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentSelection(team.FormatList()))];
-            AzureOpenAIPromptExecutionSettings executionSettings = new() { ResponseFormat = typeof(SelectionResponse) };
-            var result = chatCompletion.GetChatMessageContentsAsync(request, executionSettings, kernel: null, cancellationToken).GetAwaiter().GetResult();
-            var response = JsonSerializer.Deserialize<SelectionResponse>(result[0].Content.ToString());
+            SelectionResponse? response = GetResponsec<SelectionResponse>(request, cancellationToken);
 #if false
             string? lastAgent = history.LastOrDefault()?.AuthorName;
             if (string.IsNullOrWhiteSpace(lastAgent))
@@ -83,6 +81,14 @@ namespace shipment.agents.Orchestrator
 
         }
 
+        private T GetResponsec<T>(ChatHistory request, CancellationToken cancellationToken)
+        {
+            var result = chatCompletion.GetChatMessageContentsAsync(request, new AzureOpenAIPromptExecutionSettings () { ResponseFormat = typeof(T) }, kernel: null, cancellationToken)
+                .GetAwaiter()
+                .GetResult();
+            return JsonSerializer.Deserialize<T>(result[0].Content.ToString());
+        }
+
         public override ValueTask<GroupChatManagerResult<bool>> ShouldRequestUserInput(ChatHistory history, CancellationToken cancellationToken = default)
         {
             GroupChatManagerResult<bool> result = new(false) { Reason = "The group chat manager does not request user input." };
@@ -90,23 +96,15 @@ namespace shipment.agents.Orchestrator
         }
         public override ValueTask<GroupChatManagerResult<bool>> ShouldTerminate(ChatHistory history, CancellationToken cancellationToken = default)
         {
-            
-            bool shouldEnd = false;
-            string terminationReason=string.Empty;
             var baseResult = base.ShouldTerminate(history, cancellationToken).Result;
             if (baseResult.Value)
             {
                 return ValueTask.FromResult(baseResult);
             }
            ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentTermination)];
-                AzureOpenAIPromptExecutionSettings executionSettings = new() { ResponseFormat = typeof(TerminationResponse) };
-                var result = chatCompletion.GetChatMessageContentsAsync(request, executionSettings, kernel: null, cancellationToken).GetAwaiter().GetResult();
-                var response = JsonSerializer.Deserialize<TerminationResponse>(result[0].Content.ToString());
-                shouldEnd = response.shouldTerminate;
-                terminationReason = response.reason;
-            Task.Delay(10000).GetAwaiter().GetResult();
-
-            return ValueTask.FromResult(new GroupChatManagerResult<bool>(shouldEnd) { Reason = terminationReason });
+                
+            TerminationResponse? response = GetResponsec<TerminationResponse>(request, cancellationToken);
+            return ValueTask.FromResult(new GroupChatManagerResult<bool>(response.shouldTerminate) { Reason = response.reason });
         }
     }
 }
