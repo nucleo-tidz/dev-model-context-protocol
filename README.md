@@ -1,6 +1,6 @@
 # Model Context Protocol – Shipment and Vessel AI Integration
 
-This repository demonstrates a real-world use case of the **Model Context Protocol (MCP)** using .NET and [Semantic Kernel](https://github.com/microsoft/semantic-kernel). It integrates multiple MCP servers and a client that can invoke services dynamically through natural language chat.
+This repository demonstrates a real-world use case of the **Model Context Protocol (MCP)** using .NET and [Semantic Kernel](https://github.com/microsoft/semantic-kernel). It integrates multiple MCP servers and a client that can invoke services dynamically through natural language chat. Read more about it [here](https://www.linkedin.com/posts/nucleotidz_orchestrating-multi-agent-ai-applictaion-activity-7334108268723609601-Hrj_?utm_source=share&utm_medium=member_desktop&rcm=ACoAAA8W40wBqxt9tXu5xBQinNefCMjDPWwL9Oc)
 
 ## ✨ Overview
 
