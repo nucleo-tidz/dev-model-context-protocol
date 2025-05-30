@@ -1,25 +1,19 @@
-﻿using Azure.Core;
-using Microsoft.Extensions.AI;
-using Microsoft.SemanticKernel;
+﻿using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents.Orchestration.GroupChat;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
 using shipment.agents.Capacity;
 using shipment.agents.Vessel;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace shipment.agents.Orchestrator
 {
+    
     [Experimental("SKEXP0110")]
     public class ShipmnetGroupManager(IChatCompletionService chatCompletion) : GroupChatManager
     {
+        
         private const string VesselAgentName = nameof(VesselAgent);
         private const string CapacityAgentName = nameof(CapacityAgent);
         private const string BookingAgentName = nameof(BookingAgent);
@@ -61,7 +55,7 @@ namespace shipment.agents.Orchestrator
         public override ValueTask<GroupChatManagerResult<string>> SelectNextAgent(ChatHistory history, GroupChatTeam team, CancellationToken cancellationToken = default)
         {
             ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentSelection(team.FormatList()))];
-            SelectionResponse? response = GetResponsec<SelectionResponse>(request, cancellationToken);
+            SelectionResponse? response = GetResponse<SelectionResponse>(request, cancellationToken);
 #if false
             string? lastAgent = history.LastOrDefault()?.AuthorName;
             if (string.IsNullOrWhiteSpace(lastAgent))
@@ -81,7 +75,7 @@ namespace shipment.agents.Orchestrator
 
         }
 
-        private T GetResponsec<T>(ChatHistory request, CancellationToken cancellationToken)
+        private T GetResponse<T>(ChatHistory request, CancellationToken cancellationToken)
         {
             var result = chatCompletion.GetChatMessageContentsAsync(request, new AzureOpenAIPromptExecutionSettings () { ResponseFormat = typeof(T) }, kernel: null, cancellationToken)
                 .GetAwaiter()
@@ -103,7 +97,7 @@ namespace shipment.agents.Orchestrator
             }
            ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentTermination)];
                 
-            TerminationResponse? response = GetResponsec<TerminationResponse>(request, cancellationToken);
+            TerminationResponse? response = GetResponse<TerminationResponse>(request, cancellationToken);
             return ValueTask.FromResult(new GroupChatManagerResult<bool>(response.shouldTerminate) { Reason = response.reason });
         }
     }
