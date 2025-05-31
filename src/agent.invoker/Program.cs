@@ -15,4 +15,4 @@ IHost host = Host.CreateDefaultBuilder(args)
     }).Build();
 
 IBootStrapper aiservice = host.Services.GetRequiredService<IBootStrapper>();
-aiservice.Run(true).Wait();
+aiservice.Run().Wait();

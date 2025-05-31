@@ -13,22 +13,7 @@
 
     [Experimental("SKEXP0110")]
     public class GroupAgent()
-    {
-        public AgentGroupChat CreateAgentGroupChat(Kernel kernel)
-        {
-
-            var vesselAgent = new VesselAgent().Create(kernel);
-            var capacityAgent = new CapacityAgent().Create(kernel);
-            var bookingAgent = new BookingAgent().Create(kernel);
-            var chatOrchestrator = new Orchestrator(kernel);
-
-            return new AgentGroupChat(vesselAgent, capacityAgent, bookingAgent)
-            {
-                ExecutionSettings = chatOrchestrator.CreateExecutionSettings([vesselAgent,bookingAgent])
-
-            };
-        }
-
+    {       
         public GroupChatOrchestration CreateAgentGroupChat(Kernel kernel, OrchestrationResponseCallback responseCallback)
         {
             
