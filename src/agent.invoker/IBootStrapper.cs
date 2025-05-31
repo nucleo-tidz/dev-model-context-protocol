@@ -4,6 +4,6 @@
 
     public interface IBootStrapper
     {
-        Task Run(bool useOrchestrator=false);
+        Task Run();
     }
 }

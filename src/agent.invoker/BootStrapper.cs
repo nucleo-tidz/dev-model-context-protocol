@@ -23,35 +23,9 @@
         {
             _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
         }
-        public async Task Run(bool useOrchestrator = false)
+        public async Task Run()
         {
-            if (!useOrchestrator)
-            {
-                await StartGroupChat();
-            }
-            else
-            {
-                await StartGroupChatWithOrchestrator();
-            }
-        }
-        public ValueTask responseCallback(ChatMessageContent response)
-        {
-            Console.WriteLine(response.Content);
-            return ValueTask.CompletedTask;
-        }
-        public async Task StartGroupChatWithOrchestrator()
-        {
-            Console.WriteLine("give the command");
-            string query = Console.ReadLine();
-            InProcessRuntime runtime = new InProcessRuntime();
-            await runtime.StartAsync();
-            GroupAgent groupAgent = new GroupAgent();
-            var orchestration = groupAgent.CreateAgentGroupChat(_kernel, responseCallback);
-            OrchestrationResult<string> result = await orchestration.InvokeAsync(query, runtime);
-            await result.GetValueAsync();
-            await runtime.RunUntilIdleAsync();
-            Console.WriteLine( "Finish");
-            Console.ReadLine();
+            await StartGroupChat();
         }
         public async Task StartGroupChat()
         {
