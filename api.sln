@@ -12,8 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "util", "util", "{0E37D0EE-FAF4-4673-847F-A8BDB0A8371B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "servers", "servers", "{8AB3970C-A07F-4356-829B-5CFE948E9B71}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api", "src\servers\api\api.csproj", "{CDA755F4-9072-7ED8-996D-CD94F5E57AB4}"
