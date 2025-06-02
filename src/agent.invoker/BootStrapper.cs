@@ -2,18 +2,11 @@
 {
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.Agents.Orchestration;
-    using Microsoft.SemanticKernel.Agents.Orchestration;
-    using Microsoft.SemanticKernel.Agents.Orchestration.GroupChat;
-    using Microsoft.SemanticKernel.Agents.Orchestration.GroupChat;
     using Microsoft.SemanticKernel.Agents.Runtime.InProcess;
-    using Microsoft.SemanticKernel.ChatCompletion;
     using shipment.agents.Group;
-    using shipment.agents.Orchestrator;
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Threading;
     using System.Threading.Tasks;
-    using static System.Net.Mime.MediaTypeNames;
 
     [Experimental("SKEXP0110")]
     public class BootStrapper : IBootStrapper
@@ -25,9 +18,9 @@
         }
         public async Task Run()
         {
-           
-           await StartGroupChat();
-            
+
+            await StartGroupChat();
+
         }
         public ValueTask responseCallback(ChatMessageContent response)
         {
@@ -38,9 +31,9 @@
         {
             Console.WriteLine("give the command");
             string query = Console.ReadLine();
-            InProcessRuntime runtime = new InProcessRuntime();
+            InProcessRuntime runtime = new();
             await runtime.StartAsync();
-            GroupAgent groupAgent = new GroupAgent();
+            GroupAgent groupAgent = new();
             var orchestration = groupAgent.CreateAgentGroupChat(_kernel, responseCallback);
             OrchestrationResult<string> result = await orchestration.InvokeAsync(query, runtime);
             await result.GetValueAsync();

@@ -1,17 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-using infrastructure;
+﻿using infrastructure;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents;
-
 using ModelContextProtocol.Client;
+using System.Diagnostics.CodeAnalysis;
 
 namespace shipment.agents.Vessel
 {
     [Experimental("SKEXP0110")]
     public class VesselAgent
     {
-        public  ChatCompletionAgent Create(Kernel kernel)
+        public ChatCompletionAgent Create(Kernel kernel)
         {
             var clientFactory = new MCPClientFactory();
             Kernel agentKernel = kernel.Clone();

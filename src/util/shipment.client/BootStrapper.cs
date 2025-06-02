@@ -21,7 +21,7 @@ namespace shipment.client
         public async Task Run()
         {
             var clientfactory = new ClientFactory();
-      
+
 
             var vesselClient = await (clientfactory.CreateVesselClient());
             var vesselTools = await vesselClient.ListToolsAsync();
@@ -36,7 +36,7 @@ namespace shipment.client
             var capacityTools = await capacityClient.ListToolsAsync();
             _kernel.Plugins.AddFromFunctions("CapacityTool", capacityTools.Select(_ => _.AsKernelFunction()));
 
-            ChatHistory chatHistory = new ChatHistory();
+            ChatHistory chatHistory = new();
             chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.System, Content = "You are a container shipment agent of a shipment comapny, your role is answer user query regarding conatainer shipment , vessel , and containers  ", });
             Console.WriteLine("Ask Me");
             while (true)

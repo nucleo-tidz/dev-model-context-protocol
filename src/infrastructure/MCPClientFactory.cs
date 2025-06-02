@@ -12,7 +12,7 @@ namespace infrastructure
                          Endpoint = new Uri("https://localhost:7196/sse")
                      }
                  );
-            
+
             return await McpClientFactory.CreateAsync(clientTransport);
         }
 

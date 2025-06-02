@@ -7,14 +7,14 @@
     [McpServerToolType]
     public class VesselTool
     {
-       
+
         [McpServerTool, Description("Find vessel between origin and destination")]
-        public  VeeselDetail GetVessel(string origin , string destination)
+        public VeeselDetail GetVessel(string origin, string destination)
         {
             if (destination.ToLower() == "bangalore")
                 return null;
             return
-                new VeeselDetail { VesselId="VE-1234", VesselName="Marina",ArrivalDate = DateTime.Now.AddDays(2), DepartureDate = DateTime.Now.AddDays(15) };
+                new VeeselDetail { VesselId = "VE-1234", VesselName = "Marina", ArrivalDate = DateTime.Now.AddDays(2), DepartureDate = DateTime.Now.AddDays(15) };
         }
     }
 }

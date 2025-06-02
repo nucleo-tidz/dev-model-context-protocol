@@ -30,7 +30,7 @@ namespace infrastructure
                         configuration["gpt-4o"],
                        "gpt-4o",
                        "gpt-4o");
-                }                
+                }
                 return kernelBuilder.Build();
             });
         }

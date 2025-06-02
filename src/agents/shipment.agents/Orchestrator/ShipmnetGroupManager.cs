@@ -9,17 +9,17 @@ using System.Text.Json;
 
 namespace shipment.agents.Orchestrator
 {
-    
+
     [Experimental("SKEXP0110")]
     public class ShipmnetGroupManager(IChatCompletionService chatCompletion) : GroupChatManager
     {
-        
+
         private const string VesselAgentName = nameof(VesselAgent);
         private const string CapacityAgentName = nameof(CapacityAgent);
         private const string BookingAgentName = nameof(BookingAgent);
         public record TerminationResponse(string reason, bool shouldTerminate);
-        public record SelectionResponse(string agentName,string reason);
-        public static string AgentTermination =$"""
+        public record SelectionResponse(string agentName, string reason);
+        public static string AgentTermination = $"""
             You are an Agent Terminator, responsible for deciding whether an active agent should be terminated based on the container booking context.
             Use the chat history to assess the current state and follow these rules to make your decision:
             -Only apply termination logic if the agent has already been executed use AuthorName propert of chat history to find which agent has run.
@@ -30,7 +30,7 @@ namespace shipment.agents.Orchestrator
             - Terminate if booking is created by {BookingAgentName} and Bookind Id is generated
              Use the chat history to understand the current state and make an informed decision ,To terminate the agent respond  true along with your reason to terminate 
             """;
-        public static string AgentSelection (string participants) =>
+        public static string AgentSelection(string participants) =>
                 $"""
                 You are an Agent Selector, responsible for choosing the most appropriate agent to handle the next step in a container booking workflow. Use the chat history to understand the current state and make an informed decision.
                 Avoid unnecessary agent selection — for example, do not select the Capacity  Agent if vessel capacity has already been confirmed. The required steps in a typical container booking process are:
@@ -46,7 +46,7 @@ namespace shipment.agents.Orchestrator
                 """;
         public override ValueTask<GroupChatManagerResult<string>> FilterResults(ChatHistory history, CancellationToken cancellationToken = default)
         {
-           
+
 
             GroupChatManagerResult<string> result = new(history.LastOrDefault()?.Content ?? string.Empty) { Reason = "Default result filter provides the final chat message." };
             return ValueTask.FromResult(result);
@@ -55,12 +55,12 @@ namespace shipment.agents.Orchestrator
         {
             ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentSelection(team.FormatList()))];
             SelectionResponse? response = GetResponse<SelectionResponse>(request, cancellationToken);
-            Console.WriteLine("\n Orchestrator Selected " + response.agentName + " \n Selection Reason-: " + response.reason+"\n");
+            Console.WriteLine("\n Orchestrator Selected " + response.agentName + " \n Selection Reason-: " + response.reason + "\n");
             return ValueTask.FromResult(new GroupChatManagerResult<string>(response.agentName) { Reason = response.reason });
         }
         private T GetResponse<T>(ChatHistory request, CancellationToken cancellationToken)
         {
-            var result = chatCompletion.GetChatMessageContentsAsync(request, new AzureOpenAIPromptExecutionSettings () { ResponseFormat = typeof(T) }, kernel: null, cancellationToken)
+            var result = chatCompletion.GetChatMessageContentsAsync(request, new AzureOpenAIPromptExecutionSettings() { ResponseFormat = typeof(T) }, kernel: null, cancellationToken)
                 .GetAwaiter()
                 .GetResult();
             return JsonSerializer.Deserialize<T>(result[0].Content.ToString());
@@ -74,13 +74,13 @@ namespace shipment.agents.Orchestrator
         {
             var baseResult = base.ShouldTerminate(history, cancellationToken).Result;
             if (baseResult.Value)
-            {              
+            {
                 return ValueTask.FromResult(baseResult);
             }
-           ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentTermination)];
-                
+            ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentTermination)];
+
             TerminationResponse? response = GetResponse<TerminationResponse>(request, cancellationToken);
-            Console.WriteLine("\n Terminated: " + ( response.shouldTerminate ? "Yes":"No") + " ,\n Termination Reason:" + response.reason + "\n");
+            Console.WriteLine("\n Terminated: " + (response.shouldTerminate ? "Yes" : "No") + " ,\n Termination Reason:" + response.reason + "\n");
             return ValueTask.FromResult(new GroupChatManagerResult<bool>(response.shouldTerminate) { Reason = response.reason });
         }
     }

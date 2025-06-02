@@ -1,9 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using infrastructure;
+﻿using infrastructure;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents;
-
 using ModelContextProtocol.Client;
+using System.Diagnostics.CodeAnalysis;
 namespace shipment.agents.Capacity
 {
     [Experimental("SKEXP0110")]
@@ -21,7 +20,7 @@ namespace shipment.agents.Capacity
                 Name = nameof(CapacityAgent),
                 Instructions = @" You are an AI agent responsible for finding the space left on a vessel.You will be provided with a vessel id from the Vessel Agent ,Do not generate booking that is not your job",
                 Kernel = agentKernel,
-                Description= "an AI agent responsible for finding the space left on a vessel",
+                Description = "an AI agent responsible for finding the space left on a vessel",
 
                 Arguments = new KernelArguments(new PromptExecutionSettings() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(options: new() { RetainArgumentTypes = true }) }),
             };
