@@ -1,0 +1,12 @@
+{
+    "servers": {
+        "nucleotidz-mcp-server": {
+            "type": "stdio",
+            "command": "dotnet",
+            "args": [  "run",
+                "--project",
+                "C:\\Workspace\\nucleo-tidz\\dev-model-context-protocol\\src\\server",
+            "--no-build"]
+        }
+    }
+}

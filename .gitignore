@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+**/.vs
+**/[Bb]in/
+**/[Oo]bj/
+**/*.[Ll]ocal.json
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.log
+*.pubxml
+/volumes
