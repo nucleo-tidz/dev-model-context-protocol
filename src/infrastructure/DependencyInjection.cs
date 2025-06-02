@@ -25,9 +25,9 @@ namespace infrastructure
                 }
                 else if (connectorName == "AzureOpenAI")
                 {
-                    kernelBuilder.Services.AddAzureOpenAIChatCompletion("o4-mini",
-                        configuration["gpt-40-url"],
-                        configuration["gpt-40"],
+                    kernelBuilder.Services.AddAzureOpenAIChatCompletion("gpt-4o",
+                        configuration["gpt-4o-url"],
+                        configuration["gpt-4o"],
                        "gpt-4o",
                        "gpt-4o");
                 }                
