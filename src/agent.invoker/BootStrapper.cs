@@ -45,7 +45,7 @@
             OrchestrationResult<string> result = await orchestration.InvokeAsync(query, runtime);
             await result.GetValueAsync();
             await runtime.RunUntilIdleAsync();
-            Console.WriteLine( "Finish");
+            Console.WriteLine("**************************Good bye from agents**************************");
             Console.ReadLine();
         }
 

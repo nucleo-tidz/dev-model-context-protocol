@@ -30,7 +30,6 @@ namespace shipment.agents.Orchestrator
             - Terminate if booking is created by {BookingAgentName} and Bookind Id is generated
              Use the chat history to understand the current state and make an informed decision ,To terminate the agent respond  true along with your reason to terminate 
             """;
-
         public static string AgentSelection (string participants) =>
                 $"""
                 You are an Agent Selector, responsible for choosing the most appropriate agent to handle the next step in a container booking workflow. Use the chat history to understand the current state and make an informed decision.
@@ -56,10 +55,9 @@ namespace shipment.agents.Orchestrator
         {
             ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentSelection(team.FormatList()))];
             SelectionResponse? response = GetResponse<SelectionResponse>(request, cancellationToken);
-            Console.WriteLine(response.agentName +"-: "+response.reason);
+            Console.WriteLine("\n Orchestrator Selected " + response.agentName + " \n Selection Reason-: " + response.reason+"\n");
             return ValueTask.FromResult(new GroupChatManagerResult<string>(response.agentName) { Reason = response.reason });
         }
-
         private T GetResponse<T>(ChatHistory request, CancellationToken cancellationToken)
         {
             var result = chatCompletion.GetChatMessageContentsAsync(request, new AzureOpenAIPromptExecutionSettings () { ResponseFormat = typeof(T) }, kernel: null, cancellationToken)
@@ -67,7 +65,6 @@ namespace shipment.agents.Orchestrator
                 .GetResult();
             return JsonSerializer.Deserialize<T>(result[0].Content.ToString());
         }
-
         public override ValueTask<GroupChatManagerResult<bool>> ShouldRequestUserInput(ChatHistory history, CancellationToken cancellationToken = default)
         {
             GroupChatManagerResult<bool> result = new(false) { Reason = "The group chat manager does not request user input." };
@@ -83,7 +80,7 @@ namespace shipment.agents.Orchestrator
            ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentTermination)];
                 
             TerminationResponse? response = GetResponse<TerminationResponse>(request, cancellationToken);
-            Console.WriteLine("Terminated: "+( response.shouldTerminate ? "Yes":"No") +" Termination Reason:"+ response.reason);
+            Console.WriteLine("\n Terminated: " + ( response.shouldTerminate ? "Yes":"No") + " ,\n Termination Reason:" + response.reason + "\n");
             return ValueTask.FromResult(new GroupChatManagerResult<bool>(response.shouldTerminate) { Reason = response.reason });
         }
     }
