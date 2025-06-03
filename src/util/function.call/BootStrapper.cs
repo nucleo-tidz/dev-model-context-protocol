@@ -20,18 +20,20 @@ namespace sse.client
         }
         public async Task Run()
         {
-            #region Function Call
-            //_kernel.ImportPluginFromType<RepositionPlugin>();
-            #endregion
+            //    #region Function Call
+            //    _kernel.ImportPluginFromType<RepositionPlugin>();
+            //    #endregion
 
             #region MCP
-            //var client = await CreateContainerClient();
-            //var clientTools = client.ListToolsAsync().GetAwaiter().GetResult();
-            //_kernel.Plugins.AddFromFunctions("ClientTools", clientTools.Select(_ => _.AsKernelFunction()));
+            var client = await CreateContainerClient();
+            var clientTools = client.ListToolsAsync().GetAwaiter().GetResult();
+            _kernel.Plugins.AddFromFunctions("ClientTools", clientTools.Select(_ => _.AsKernelFunction()));
             #endregion
 
             ChatHistory chatHistory = new ChatHistory();
-            chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.System, Content = "You are a container shipment agent of a shipment company, your role is answer user query regarding container repositioning plan , DO NOT assume answer if you dont know the context or you dont have the enough data ", });
+            chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { 
+                Role = AuthorRole.System, 
+                Content = "You are a container shipment agent of a shipment company, your role is answer user query regarding container repositioning plan , DO NOT assume answer if you dont know the context or you dont have the enough data ", });
             Console.WriteLine("Ask Me");
             while (true)
             {

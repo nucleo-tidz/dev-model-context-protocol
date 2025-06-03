@@ -22,7 +22,7 @@ namespace shipment.agents.Orchestrator
         public static string AgentTermination = $"""
             You are an Agent Terminator, responsible for deciding whether an active agent should be terminated based on the container booking context.
             Use the chat history to assess the current state and follow these rules to make your decision:
-            -Only apply termination logic if the agent has already been executed use AuthorName propert of chat history to find which agent has run.
+            -Only apply termination logic if the agent has already been executed use AuthorName property of chat history to find which agent has run.
               do not evaluate whether vessel information exists unless the {VesselAgentName} has already run ,.
               do not evaluate whether capacity  exists unless the {CapacityAgentName} has already run .
             - Terminate the agent If the vessel information is missing and {VesselAgentName} has already run , DO NOT assume that vessel information is wrong or fictious if a vessel id is present 
