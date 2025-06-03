@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shipment.agents", "src\agen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "agent.invoker", "src\agent.invoker\agent.invoker.csproj", "{82EC2376-FAF5-42D6-9CFA-B8267D4C94A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "reposition.server", "src\util\reposition.server\reposition.server.csproj", "{1505EEC3-ED3D-4B2E-8336-228C2919A7CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{82EC2376-FAF5-42D6-9CFA-B8267D4C94A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82EC2376-FAF5-42D6-9CFA-B8267D4C94A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82EC2376-FAF5-42D6-9CFA-B8267D4C94A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1505EEC3-ED3D-4B2E-8336-228C2919A7CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1505EEC3-ED3D-4B2E-8336-228C2919A7CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1505EEC3-ED3D-4B2E-8336-228C2919A7CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1505EEC3-ED3D-4B2E-8336-228C2919A7CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{A85F90B9-5AFF-7E1F-7C6A-64D75EC3371C} = {8AB3970C-A07F-4356-829B-5CFE948E9B71}
 		{E3899B15-3344-47F9-B8FE-B1ADCB8EBF32} = {8AB3970C-A07F-4356-829B-5CFE948E9B71}
 		{3403D107-120B-49E9-8DF6-298266918CDB} = {3FA15D95-F498-4CE7-935F-C571B90337F2}
+		{1505EEC3-ED3D-4B2E-8336-228C2919A7CD} = {0E37D0EE-FAF4-4673-847F-A8BDB0A8371B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ADA82D92-6241-4E70-9A3E-F484708B4B51}

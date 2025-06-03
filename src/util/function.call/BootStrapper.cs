@@ -7,6 +7,7 @@ namespace sse.client
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.ChatCompletion;
     using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
+    using ModelContextProtocol.Client;
 
     public class BootStrapper : IBootStrapper
     {
@@ -19,10 +20,18 @@ namespace sse.client
         }
         public async Task Run()
         {
-            _kernel.ImportPluginFromType<RepositionPlugin>();
+            #region Function Call
+            //_kernel.ImportPluginFromType<RepositionPlugin>();
+            #endregion
+
+            #region MCP
+            //var client = await CreateContainerClient();
+            //var clientTools = client.ListToolsAsync().GetAwaiter().GetResult();
+            //_kernel.Plugins.AddFromFunctions("ClientTools", clientTools.Select(_ => _.AsKernelFunction()));
+            #endregion
 
             ChatHistory chatHistory = new ChatHistory();
-            chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.System, Content = "You are a container shipment agent of a shipment company, your role is answer user query regarding container repositioning plan  ", });
+            chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.System, Content = "You are a container shipment agent of a shipment company, your role is answer user query regarding container repositioning plan , DO NOT assume answer if you dont know the context or you dont have the enough data ", });
             Console.WriteLine("Ask Me");
             while (true)
             {
@@ -32,13 +41,25 @@ namespace sse.client
 
                 ChatMessageContent chatMessageContent = await _chatCompletionService.GetChatMessageContentAsync(chatHistory, new AzureOpenAIPromptExecutionSettings()
                 {
-                    Temperature = 0,
+                   
                     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
                 }, _kernel);
                 Console.WriteLine(chatMessageContent.Content);
                 chatHistory.Add(new Microsoft.SemanticKernel.ChatMessageContent { Role = AuthorRole.Assistant, Content = chatMessageContent.Content });
             }
 
+        }
+
+        public async Task<IMcpClient> CreateContainerClient()
+        {
+            var clientTransport = new SseClientTransport(
+                     new SseClientTransportOptions
+                     {
+                         Endpoint = new Uri("https://localhost:7156/sse")
+                     }
+                 );
+
+            return await McpClientFactory.CreateAsync(clientTransport);
         }
     }
 
