@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using infrastructure.Service;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using Microsoft.SemanticKernel;
+using static infrastructure.Service.AccessTokenService;
 namespace infrastructure
 {
     public static class DependencyInjection
@@ -34,6 +35,16 @@ namespace infrastructure
                 return kernelBuilder.Build();
             });
         }
+        public static IServiceCollection AddAzureTokenClient(this IServiceCollection services, IConfiguration configuration)
+        {
+           return services
+                          .AddTransient<IAccessTokenService, AccessTokenService>()
+                          .AddHttpClient();
+        }
+        public static IServiceCollection AddMCPClientFactory(this IServiceCollection services)
+        {
+            return services.AddTransient<IMCPClientFactory, MCPClientFactory>();
+        }        
     }
 }
 

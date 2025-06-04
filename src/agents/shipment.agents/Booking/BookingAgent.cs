@@ -2,15 +2,15 @@
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents;
 using ModelContextProtocol.Client;
+
 using System.Diagnostics.CodeAnalysis;
 namespace shipment.agents.Capacity
 {
     [Experimental("SKEXP0110")]
-    public class BookingAgent
+    public class BookingAgent(IMCPClientFactory clientFactory): IAgent
     {
         public ChatCompletionAgent Create(Kernel kernel)
-        {
-            var clientFactory = new MCPClientFactory();
+        {          
             Kernel agentKernel = kernel.Clone();
             var bookingClient = clientFactory.CreateBookingClient().GetAwaiter().GetResult();
             var bookingTools = bookingClient.ListToolsAsync().GetAwaiter().GetResult();

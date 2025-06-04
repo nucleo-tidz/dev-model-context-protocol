@@ -12,9 +12,11 @@
     public class BootStrapper : IBootStrapper
     {
         private readonly Kernel _kernel;
-        public BootStrapper(Kernel kernel)
+        IGroupAgent _groupAgent;
+        public BootStrapper(Kernel kernel, IGroupAgent groupAgent)
         {
             _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
+            _groupAgent = groupAgent;
         }
         public async Task Run()
         {
@@ -33,8 +35,8 @@
             string query = Console.ReadLine();
             InProcessRuntime runtime = new();
             await runtime.StartAsync();
-            GroupAgent groupAgent = new();
-            var orchestration = groupAgent.CreateAgentGroupChat(_kernel, responseCallback);
+           
+            var orchestration = _groupAgent.CreateAgentGroupChat(responseCallback);
             OrchestrationResult<string> result = await orchestration.InvokeAsync(query, runtime);
             await result.GetValueAsync();
             await runtime.RunUntilIdleAsync();

@@ -6,11 +6,10 @@ using System.Diagnostics.CodeAnalysis;
 namespace shipment.agents.Capacity
 {
     [Experimental("SKEXP0110")]
-    public class CapacityAgent
+    public class CapacityAgent(IMCPClientFactory clientFactory): IAgent
     {
         public ChatCompletionAgent Create(Kernel kernel)
         {
-            var clientFactory = new MCPClientFactory();
             Kernel agentKernel = kernel.Clone();
             var capacityClient = clientFactory.CreateCapacityClient().GetAwaiter().GetResult();
             var capacityTools = capacityClient.ListToolsAsync().GetAwaiter().GetResult();

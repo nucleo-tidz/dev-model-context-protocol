@@ -7,11 +7,10 @@ using System.Diagnostics.CodeAnalysis;
 namespace shipment.agents.Vessel
 {
     [Experimental("SKEXP0110")]
-    public class VesselAgent
+    public class VesselAgent(IMCPClientFactory clientFactory): IAgent
     {
         public ChatCompletionAgent Create(Kernel kernel)
-        {
-            var clientFactory = new MCPClientFactory();
+        {         
             Kernel agentKernel = kernel.Clone();
             var vesselClient = clientFactory.CreateVesselClient().GetAwaiter().GetResult();
             var vesselTools = vesselClient.ListToolsAsync().GetAwaiter().GetResult();
