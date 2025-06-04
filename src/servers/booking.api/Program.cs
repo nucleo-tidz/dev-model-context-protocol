@@ -27,5 +27,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapMcp().RequireAuthorization();
+app.MapMcp().RequireAuthorization(policy =>
+{
+    policy.RequireAuthenticatedUser();
+    //policy.RequireRole("mcp.read"); 
+});
 app.Run();

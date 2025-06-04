@@ -25,20 +25,11 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 app.UseAuthentication();
-//app.Use(async (context, next) =>
-//{
-//    var user = context.User;
-//    if (user?.Identity?.IsAuthenticated == true)
-//    {
-//        Console.WriteLine($"User authenticated: {user.Identity.Name}");
-//    }
-//    else
-//    {
-//        Console.WriteLine("User NOT authenticated");
-//    }
-//    await next();
-//});
 app.UseAuthorization();
 app.UseHttpsRedirection();
-app.MapMcp().RequireAuthorization();
+app.MapMcp().RequireAuthorization(policy =>
+{
+    policy.RequireAuthenticatedUser();
+    //policy.RequireRole("mcp.read"); 
+});
 app.Run();
