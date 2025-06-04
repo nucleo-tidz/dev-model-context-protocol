@@ -6,9 +6,6 @@
     using Microsoft.SemanticKernel.Agents.Orchestration;
     using Microsoft.SemanticKernel.Agents.Orchestration.GroupChat;
     using Microsoft.SemanticKernel.ChatCompletion;
-    using OpenAI.Chat;
-    using shipment.agents.Capacity;
-    using shipment.agents.Vessel;
     using System.Diagnostics.CodeAnalysis;
 
     [Experimental("SKEXP0110")]
@@ -16,18 +13,16 @@
     {
         public GroupChatOrchestration CreateAgentGroupChat( OrchestrationResponseCallback responseCallback)
         {
-            List<ChatCompletionAgent> shipmentagents = new List<ChatCompletionAgent>();
-            foreach (var agent in agents) 
+            var shipmentAgents = agents.Select(agent => agent.Create(kernel)).ToList();
+            var groupManager = new ShipmnetGroupManager(kernel.GetRequiredService<IChatCompletionService>())
             {
-                shipmentagents.Add(agent.Create(kernel));
-            }
-            GroupChatOrchestration orchestration = new(
-            new ShipmnetGroupManager(kernel.GetRequiredService<IChatCompletionService>()) { MaximumInvocationCount = 4 }, shipmentagents.ToArray())
+                MaximumInvocationCount = 4, 
+            };
+            return new GroupChatOrchestration(groupManager, shipmentAgents.ToArray())
             {
                 ResponseCallback = responseCallback,
+                
             };
-            return orchestration;
         }
-
     }
 }
