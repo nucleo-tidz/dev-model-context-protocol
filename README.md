@@ -71,9 +71,10 @@ A Semantic Kernel-based MCP client that:
 | **Tenant ID**   | From the app's **Overview** tab |
 | **Client ID**   | Also from the **Overview** tab |
 | **Client Secret** | From Step 2 |
-| **Token Endpoint** |  
-```bash
-https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/token
+| **Token Endpoint** |  https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/token 
+
+
+---
 ### 🔹 Step 4: (Optional but Recommended) Create a Scope for Your API
 
 If you have registered your **MCP Server** as another Azure AD application (API app), follow these steps:
@@ -120,3 +121,5 @@ curl -X POST https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/token \
   -d "client_secret=<client-secret>" \
   -d "scope=api://<api-client-id>/.default" \
   -d "grant_type=client_credentials"
+
+
