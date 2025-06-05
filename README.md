@@ -1,41 +1,32 @@
-# Model Context Protocol – Shipment and Vessel AI Integration
+# 📦 Container Booking POC with Agent Orchestration and MCP Server
 
-This repository demonstrates a real-world use case of the **Model Context Protocol (MCP)** using .NET and [Semantic Kernel](https://github.com/microsoft/semantic-kernel). It integrates multiple MCP servers and a client that can invoke services dynamically through natural language chat. Read more about it [here](https://www.linkedin.com/posts/nucleotidz_orchestrating-multi-agent-ai-applictaion-activity-7334108268723609601-Hrj_?utm_source=share&utm_medium=member_desktop&rcm=ACoAAA8W40wBqxt9tXu5xBQinNefCMjDPWwL9Oc)
+This repository presents a proof of concept (PoC) for orchestrating a multi-step **container booking workflow** using the **Model Context Protocol (MCP)**, built with **.NET** and [Semantic Kernel](https://github.com/microsoft/semantic-kernel).
 
-## ✨ Overview
+## 🧭 Workflow Overview
 
-The project sets up a multi-server environment with the following components:
+The container booking process is broken into three distinct steps, each handled by a specialized agent:
 
-### 🚢 Vessel Server
-An MCP server that responds with **number of legs** for a given **vessel ID**.
+1. **Find Vessel** – Searches available vessels based on user input  
+2. **Check Capacity** – Checks space availability on the selected vessel  
+3. **Complete Booking** – Finalizes the booking process with validated details  
 
-### 📦 Shipment Server
-An MCP server focused on **container information**. It provides:
-- **Container type** (e.g., DRY) based on ID
-- **Container state** (e.g., Damaged) based on ID
+Each agent connects to a separate **MCP server**, enabling decentralized knowledge and function isolation. An **orchestrator** interprets user intent using natural language and invokes the appropriate agent accordingly.
 
-### 🤖 Shipment Client
-A Semantic Kernel-based MCP client that:
-- Connects to both the Vessel and Shipment servers
-- Embeds a **chat interface**
-- Automatically routes user queries to the appropriate server using tool calling
+## 🔐 Security
 
-## 🧠 How It Works
+All MCP servers are secured using **Microsoft Entra ID (formerly Azure Active Directory)**.  
+- **Authentication**: Agents authenticate using OAuth2 client credentials  
+- **Authorization**: Role-based access control (RBAC) ensures agents only access permitted scopes  
 
-1. You start a Semantic Kernel-powered chat from the shipment client.
-2. The user asks a question like:
-   - “What type of container is CONT123?”
-   - “How many legs does vessel VSL456 have?”
-3. The SK planner chooses the appropriate MCP tool and routes the query to the correct server via Server-Sent Events (SSE).
-4. The result is returned in the chat seamlessly.
+## 🧠 Tech Stack
 
-## 🛠 Technologies Used
+- **C# (.NET)** – Core implementation of agents, orchestration logic, and MCP clients  
+- **Azure OpenAI Service** – For natural language understanding and orchestration logic  
+- **GPT-4** – Model used via Semantic Kernel for interpreting user prompts and selecting agents  
+- **Semantic Kernel** – Enables intelligent planning and multi-agent coordination  
+- **Microsoft Entra ID (Azure AD)** – Secure access and identity management for MCP servers  
 
-- [.NET](https://dotnet.microsoft.com/)
-- [Semantic Kernel](https://github.com/microsoft/semantic-kernel)
-- Model Context Protocol (via `ModelContextProtocol` NuGet package)
-- Docker & `docker-compose`
-- Server-Sent Events (SSE) for live connections
+
 
 # 🔐 Azure AD Setup for MCP Authentication (Client Credentials Flow)
 
