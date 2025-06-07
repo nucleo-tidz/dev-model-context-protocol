@@ -11,10 +11,12 @@ namespace infrastructure
             var clientTransport = new SseClientTransport(
                      new SseClientTransportOptions
                      {
-                         Endpoint = new Uri("https://localhost:7196/sse"),
+                         UseStreamableHttp=true,
+                         Endpoint = new Uri("https://localhost:7196"),
                          AdditionalHeaders = new Dictionary<string, string> {
                            { "Authorization", $"Bearer {token}" }
-                               }
+                               },
+                        
                      }
                  );
 
@@ -27,7 +29,8 @@ namespace infrastructure
             var clientTransport = new SseClientTransport(
                      new SseClientTransportOptions
                      {
-                         Endpoint = new Uri("https://localhost:7289/sse"),
+                         UseStreamableHttp = true,
+                         Endpoint = new Uri("https://localhost:7289"),
                          AdditionalHeaders =new Dictionary<string, string> {
                                { "Authorization", $"Bearer {token}" }
                                }
@@ -42,7 +45,8 @@ namespace infrastructure
             var clientTransport = new SseClientTransport(
                      new SseClientTransportOptions
                      {
-                         Endpoint = new Uri("https://localhost:7044/sse"),
+                         UseStreamableHttp = true,
+                         Endpoint = new Uri("https://localhost:7044"),
                          AdditionalHeaders = new Dictionary<string, string> {
                                 { "Authorization", $"Bearer {token}" }
                                }
@@ -56,7 +60,8 @@ namespace infrastructure
             var clientTransport = new SseClientTransport(
                      new SseClientTransportOptions
                      {
-                         Endpoint = new Uri("https://localhost:7061/sse"),
+                         UseStreamableHttp = true,
+                         Endpoint = new Uri("https://localhost:7061"),
                          AdditionalHeaders = new Dictionary<string, string> {
                                { "Authorization", $"Bearer {token}" }
                                }

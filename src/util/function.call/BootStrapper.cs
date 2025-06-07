@@ -57,7 +57,8 @@ namespace sse.client
             var clientTransport = new SseClientTransport(
                      new SseClientTransportOptions
                      {
-                         Endpoint = new Uri("https://localhost:7156/sse")
+                         UseStreamableHttp=true,
+                         Endpoint = new Uri("https://localhost:7156")
                      }
                  );
 
