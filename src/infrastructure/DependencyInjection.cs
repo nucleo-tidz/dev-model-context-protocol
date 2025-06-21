@@ -12,22 +12,11 @@ namespace infrastructure
             return services.AddTransient<Kernel>(serviceProvider =>
             {
                 IKernelBuilder kernelBuilder = Kernel.CreateBuilder();
-
-
                 kernelBuilder.Services.AddAzureOpenAIChatCompletion("o4-mini",
                   configuration["o4-mini-url"],
                   configuration["o4-mini"],
                    "o4-mini",
                    "o4-mini");
-
-
-
-                //kernelBuilder.Services.AddAzureOpenAIChatCompletion("gpt-4.1-mini",
-                //  "https://nucle-mbdqap7c-southeastasia.openai.azure.com/",
-                // "Bc67jEum8xcDZmJ5pWopes1wdfgwCNAQ0MukJLCcz1wSs7aorsy0JQQJ99BFACqBBLyXJ3w3AAAAACOGQakB",
-                //   "o4-mini",
-                //   "o4-mini");
-
                 return kernelBuilder.Build();
 
             
