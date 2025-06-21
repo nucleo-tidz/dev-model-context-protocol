@@ -7,7 +7,7 @@ namespace infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddSemanticKernel(this IServiceCollection services, IConfiguration configuration, string connectorName = "o4-mini")
+        public static IServiceCollection AddSemanticKernel(this IServiceCollection services, IConfiguration configuration)
         {
             return services.AddTransient<Kernel>(serviceProvider =>
             {
