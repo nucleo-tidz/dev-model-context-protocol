@@ -13,10 +13,11 @@
     {
         public GroupChatOrchestration CreateAgentGroupChat( OrchestrationResponseCallback responseCallback)
         {
-            var shipmentAgents = agents.Select(agent => agent.Create(kernel)).ToList();
+            var shipmentAgents = agents.Select(agent => agent.CreateAgents(kernel)).ToList();
             var groupManager = new ShipmnetGroupManager(kernel.GetRequiredService<IChatCompletionService>())
             {
                 MaximumInvocationCount = 4, 
+                
             };
             return new GroupChatOrchestration(groupManager, shipmentAgents.ToArray())
             {
