@@ -3,6 +3,8 @@ using Azure.AI.Projects;
 using Azure.Identity;
 
 using infrastructure;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents;
 using Microsoft.SemanticKernel.Agents.AzureAI;
@@ -12,7 +14,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace shipment.agents.Capacity
 {
     [Experimental("SKEXP0110")]
-    public class CapacityAgent(IMCPClientFactory clientFactory): IAgent
+    public class CapacityAgent(IMCPClientFactory clientFactory,IConfiguration configuration): IAgent
     {      
         public Agent CreateAgents(Kernel kernel)
         {
@@ -20,7 +22,7 @@ namespace shipment.agents.Capacity
             var capacityTools = capacityClient.ListToolsAsync().GetAwaiter().GetResult();
 
 
-            AIProjectClient projectClient = new(new Uri("https://nucle-mbdqap7c-southeastasia.services.ai.azure.com/api/projects/nucleotidz-agents"), new DefaultAzureCredential());
+            AIProjectClient projectClient = new(new Uri(configuration["AgentProjectEndpoint"]), new DefaultAzureCredential());
             PersistentAgentsClient agentsClient = projectClient.GetPersistentAgentsClient();
             PersistentAgent definition = agentsClient.Administration.GetAgent("asst_QWOr2oHmxiwcsguWbiUO1szR");
             AzureAIAgent agent = new(definition, agentsClient)
