@@ -12,27 +12,14 @@ namespace infrastructure
             return services.AddTransient<Kernel>(serviceProvider =>
             {
                 IKernelBuilder kernelBuilder = Kernel.CreateBuilder();
-                if (connectorName == "OpenAI")
-                {
-                    kernelBuilder.Services.AddOpenAIChatCompletion(modelId: "openai/gpt-4o", endpoint: new Uri("https://models.github.ai/inference"), apiKey: configuration["GitAI"]);
-                }
-                else if (connectorName == "o4-mini")
-                {
-                    kernelBuilder.Services.AddAzureOpenAIChatCompletion("o4-mini",
-                      configuration["o4-mini-url"],
-                      configuration["o4-mini"],
-                       "o4-mini",
-                       "o4-mini");
-                }
-                else if (connectorName == "AzureOpenAI")
-                {
-                    kernelBuilder.Services.AddAzureOpenAIChatCompletion("gpt-4o",
-                        configuration["gpt-4o-url"],
-                        configuration["gpt-4o"],
-                       "gpt-4o",
-                       "gpt-4o");
-                }
+                kernelBuilder.Services.AddAzureOpenAIChatCompletion("o4-mini",
+                  configuration["o4-mini-url"],
+                  configuration["o4-mini"],
+                   "o4-mini",
+                   "o4-mini");
                 return kernelBuilder.Build();
+
+            
             });
         }
         public static IServiceCollection AddAzureTokenClient(this IServiceCollection services, IConfiguration configuration)

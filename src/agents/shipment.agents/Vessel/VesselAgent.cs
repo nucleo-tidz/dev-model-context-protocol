@@ -1,6 +1,12 @@
-﻿using infrastructure;
+﻿using Azure.AI.Agents.Persistent;
+using Azure.AI.Projects;
+using Azure.Identity;
+
+using infrastructure;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents;
+using Microsoft.SemanticKernel.Agents.AzureAI;
+
 using ModelContextProtocol.Client;
 using System.Diagnostics.CodeAnalysis;
 
@@ -9,26 +15,22 @@ namespace shipment.agents.Vessel
     [Experimental("SKEXP0110")]
     public class VesselAgent(IMCPClientFactory clientFactory): IAgent
     {
-        public ChatCompletionAgent Create(Kernel kernel)
-        {         
-            Kernel agentKernel = kernel.Clone();
+        public Agent CreateAgents(Kernel kernel) 
+        {
             var vesselClient = clientFactory.CreateVesselClient().GetAwaiter().GetResult();
             var vesselTools = vesselClient.ListToolsAsync().GetAwaiter().GetResult();
-            agentKernel.Plugins.AddFromFunctions("VesselContainerTool", vesselTools.Select(_ => _.AsKernelFunction()));
-            return new ChatCompletionAgent()
+          
+
+            AIProjectClient projectClient = new(new Uri("https://nucle-mbdqap7c-southeastasia.services.ai.azure.com/api/projects/nucleotidz-agents"), new DefaultAzureCredential());
+            PersistentAgentsClient agentsClient = projectClient.GetPersistentAgentsClient();
+            PersistentAgent definition = agentsClient.Administration.GetAgent("asst_xByEOvS0eopXZyfkQp0AduxN");
+            AzureAIAgent agent = new(definition, agentsClient)
             {
-                Name = nameof(VesselAgent),
-                Instructions = @" You are an AI agent responsible for searching vessel between origin and destination.You will be provided with an origin city name and destination city name, 
-                                  Do not assume or guess the origin or destination city name if it is not explicitly provided , Do not check capacity or generate booking that is not your job.
-                               
-                               Your workflow includes one steps:
-                               1. Find vessel between origin and destination city name.",
-                Kernel = agentKernel,
-                Description = " AI agent responsible for searching vessel between origin and destination",
-
-
+                Kernel = kernel,
                 Arguments = new KernelArguments(new PromptExecutionSettings() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(options: new() { RetainArgumentTypes = true }) }),
             };
+            agent.Kernel.Plugins.AddFromFunctions("VesselContainerTool", vesselTools.Select(_ => _.AsKernelFunction()));
+            return agent;
         }
     }
 }

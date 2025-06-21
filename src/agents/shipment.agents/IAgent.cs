@@ -5,6 +5,6 @@ namespace shipment.agents
 {
     public interface IAgent
     {
-        ChatCompletionAgent Create(Kernel kernel);
+        Agent CreateAgents(Kernel kernel);
     }
 }
