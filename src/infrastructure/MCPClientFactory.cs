@@ -3,7 +3,8 @@ using ModelContextProtocol.Client;
 
 namespace infrastructure
 {
-    public class MCPClientFactory(IAccessTokenService accessTokenService) : IMCPClientFactory
+    public class MCPClientFactory(IAccessTokenService accessTokenService)
+        : IMCPClientFactory
     {
         public async Task<IMcpClient> CreateContainerClient()
         {
