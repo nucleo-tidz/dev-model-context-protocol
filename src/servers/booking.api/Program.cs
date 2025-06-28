@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddMcpServer().WithHttpTransport(o => o.Stateless = true).WithTools<BookingContainerTool>();
+builder.Services.AddMcpServer().WithHttpTransport(option => { option.Stateless = true; }).WithTools<BookingContainerTool>();
 var authSetting = builder.Configuration.GetSection("Jwt");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -20,7 +20,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddAuthorization();
-
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 app.UseHttpsRedirection();
@@ -30,6 +30,6 @@ app.UseAuthorization();
 app.MapMcp().RequireAuthorization(policy =>
 {
     policy.RequireAuthenticatedUser();
-    //policy.RequireRole("mcp.read"); 
+    policy.RequireRole("mcp.shipment");
 });
 app.Run();

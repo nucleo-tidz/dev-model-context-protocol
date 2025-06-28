@@ -2,7 +2,6 @@
 {
     using agents.Orchestrator;
     using Microsoft.SemanticKernel;
-    using Microsoft.SemanticKernel.Agents;
     using Microsoft.SemanticKernel.Agents.Orchestration;
     using Microsoft.SemanticKernel.Agents.Orchestration.GroupChat;
     using Microsoft.SemanticKernel.ChatCompletion;
@@ -11,18 +10,19 @@
     [Experimental("SKEXP0110")]
     public class GroupAgent(IEnumerable<IAgent> agents, Kernel kernel) : IGroupAgent
     {
-        public GroupChatOrchestration CreateAgentGroupChat( OrchestrationResponseCallback responseCallback)
+        public async Task<GroupChatOrchestration> CreateAgentGroupChat(OrchestrationResponseCallback responseCallback, OrchestrationInteractiveCallback orchestrationInteractiveCallback)
         {
-            var shipmentAgents = agents.Select(agent => agent.CreateAgents(kernel)).ToList();
+            var shipmentAgents = await Task.WhenAll(agents.Select(agent => agent.Create()));
+
             var groupManager = new ShipmnetGroupManager(kernel.GetRequiredService<IChatCompletionService>())
             {
-                MaximumInvocationCount = 4, 
-                
+                MaximumInvocationCount = 4,
+                InteractiveCallback = orchestrationInteractiveCallback
             };
             return new GroupChatOrchestration(groupManager, shipmentAgents.ToArray())
             {
                 ResponseCallback = responseCallback,
-                
+
             };
         }
     }

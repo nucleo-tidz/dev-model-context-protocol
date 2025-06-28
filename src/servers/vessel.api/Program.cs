@@ -1,10 +1,10 @@
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using vessel.api;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddMcpServer().WithHttpTransport(o => o.Stateless = true).WithTools<VesselTool>();
+builder.Services.AddMcpServer().WithHttpTransport(option => { option.Stateless = true; })
+      .WithTools<VesselTool>();
 
 var authSetting = builder.Configuration.GetSection("Jwt");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -22,6 +22,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddAuthorization();
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 app.UseAuthentication();
@@ -30,6 +31,6 @@ app.UseHttpsRedirection();
 app.MapMcp().RequireAuthorization(policy =>
 {
     policy.RequireAuthenticatedUser();
-    //policy.RequireRole("mcp.read"); 
+    policy.RequireRole("mcp.shipment");
 });
 app.Run();

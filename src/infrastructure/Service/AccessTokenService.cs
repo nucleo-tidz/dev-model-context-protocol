@@ -1,12 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace infrastructure.Service
 {
@@ -15,20 +9,20 @@ namespace infrastructure.Service
         [JsonPropertyName("access_token")]
         public string AccessToken { get; set; }
     }
-    public class AccessTokenService: IAccessTokenService
+    public class AccessTokenService : IAccessTokenService
     {
 
         private readonly IConfiguration _configuration;
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public AccessTokenService( IHttpClientFactory httpClientFactory,IConfiguration configuration)
+        public AccessTokenService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
         }
         public async Task<string> GetAccessTokenAsync()
         {
-           
+
             var form = new Dictionary<string, string>
         {
                         {"grant_type", "client_credentials" },

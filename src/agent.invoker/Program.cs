@@ -1,7 +1,5 @@
 ﻿using client;
-
 using infrastructure;
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,9 +20,9 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddAgents();
 #pragma warning disable SKEXP0110 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
         services.AddTransient<IBootStrapper, BootStrapper>();
-     
+
 #pragma warning restore SKEXP0110 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
     }).Build();
 
-IBootStrapper aiservice = host.Services.GetRequiredService<IBootStrapper>();
-aiservice.Run().Wait();
+IBootStrapper bootStrapper = host.Services.GetRequiredService<IBootStrapper>();
+bootStrapper.StartGroupChatAsync(CancellationToken.None).Wait();
