@@ -6,23 +6,23 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 	<ItemGroup>
-	<PackageReference Include="Dapper" Version="2.1.35" />
+	<PackageReference Include="Dapper" Version="2.1.66" />
 	<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
-	<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
-	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
-	<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
-	<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
-	<PackageReference Include="Microsoft.SemanticKernel" Version="1.51.0" />
-	<PackageReference Include="Microsoft.SemanticKernel.Agents.Orchestration" Version="1.54.0-preview" />
-	<PackageReference Include="Microsoft.SemanticKernel.Agents.Runtime.InProcess" Version="1.54.0-preview" />
-	<PackageReference Include="Microsoft.SemanticKernel.Connectors.Google" Version="1.51.0-alpha" />
-    <PackageReference Include="Microsoft.SemanticKernel.Agents.Abstractions" Version="1.57.0" />
-    <PackageReference Include="Microsoft.SemanticKernel.Agents.Core" Version="1.54.0" />
-    <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.54.0" />
+	<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0-preview.7.25380.108" />
+	<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.0-preview.7.25380.108" />
+	<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0-preview.7.25380.108" />
+	<PackageReference Include="Microsoft.SemanticKernel" Version="1.63.0" />
+	<PackageReference Include="Microsoft.SemanticKernel.Agents.Orchestration" Version="1.63.0-preview" />
+	<PackageReference Include="Microsoft.SemanticKernel.Agents.Runtime.InProcess" Version="1.63.0-preview" />
+	<PackageReference Include="Microsoft.SemanticKernel.Connectors.Google" Version="1.63.0-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Agents.Abstractions" Version="1.63.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Agents.Core" Version="1.63.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.63.0" />
 	<PackageReference Include="ModelContextProtocol" Version="0.2.0-preview.3" />
-    <PackageReference Include="Microsoft.SemanticKernel.Agents.AzureAI" Version="1.57.0-preview" />
-    <PackageReference Include="Azure.AI.Agents.Persistent" Version="1.0.0" />
-    <PackageReference Include="Azure.AI.Projects" Version="1.0.0-beta.9" />
+    <PackageReference Include="Microsoft.SemanticKernel.Agents.AzureAI" Version="1.63.0-preview" />
+    <PackageReference Include="Azure.AI.Agents.Persistent" Version="1.2.0-beta.2" />
+    <PackageReference Include="Azure.AI.Projects" Version="1.0.0-beta.11" />
 	<PackageReference Include="ModelContextProtocol.AspNetCore" Version="0.2.0-preview.3" />
 	</ItemGroup>
 
