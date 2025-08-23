@@ -2,6 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using agent.speech.invoker;
 
+using Azure;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents.Runtime.InProcess;
@@ -30,11 +32,13 @@ public class BootStrapper : IBootStrapper
     }
     public async Task StartGroupChatAsync(CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Voice chat ready. Speak your command…");
+        _logger.LogInformation("Voice chat ready");
+        await _speech.SpeakAsync("Hello! I’m your AI assistant for container bookings. Just tell me which type of container you need and the route from where to where  and I’ll take care of it.");
         _speech.RecognizedAsync += async text =>
         {
             if (!string.IsNullOrWhiteSpace(text))
             {
+                await _speech.SpeakAsync("Please wait while I make the booking");
                 await CallSemanticKernel(text, cancellationToken);
             }
         };
