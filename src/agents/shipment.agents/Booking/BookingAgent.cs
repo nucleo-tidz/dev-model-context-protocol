@@ -15,6 +15,7 @@ namespace shipment.agents.Capacity
             var bookingClient = await clientFactory.CreateBookingClient();
             var bookingTools = await bookingClient.ListToolsAsync();
             var agent = base.GetAzureAgent(configuration["BookingAgentId"]);
+            agent.Kernel.Plugins.Clear();
             agent.Kernel.Plugins.AddFromFunctions("BookingAgentTool", bookingTools.Select(_ => _.AsKernelFunction()));
             return agent;
 

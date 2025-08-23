@@ -15,6 +15,7 @@ namespace shipment.agents.Vessel
             var vesselClient = await clientFactory.CreateVesselClient();
             var vesselTools = await vesselClient.ListToolsAsync();
             var agent = base.GetAzureAgent(configuration["VesselAgentId"]);
+            agent.Kernel.Plugins.Clear();
             agent.Kernel.Plugins.AddFromFunctions("VesselContainerTool", vesselTools.Select(_ => _.AsKernelFunction()));
             return agent;
         }

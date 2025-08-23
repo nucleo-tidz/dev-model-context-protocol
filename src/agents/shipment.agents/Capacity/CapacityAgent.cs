@@ -14,6 +14,7 @@ namespace shipment.agents.Capacity
             var capacityClient = await clientFactory.CreateCapacityClient();
             var capacityTools = await capacityClient.ListToolsAsync();
             var agent = base.GetAzureAgent(configuration["CapacityAgentId"]);
+            agent.Kernel.Plugins.Clear();
             agent.Kernel.Plugins.AddFromFunctions("CapacityContainerTool", capacityTools.Select(_ => _.AsKernelFunction()));
             return agent;
         }

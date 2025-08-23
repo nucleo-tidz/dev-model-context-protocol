@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "agent.invoker", "src\agent.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "reposition.server", "src\util\reposition.server\reposition.server.csproj", "{1505EEC3-ED3D-4B2E-8336-228C2919A7CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aegnt.speech.invoker", "src\aegnt.speech.invoker\aegnt.speech.invoker.csproj", "{B038F633-6619-406E-9BF6-427318E6D0F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{1505EEC3-ED3D-4B2E-8336-228C2919A7CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1505EEC3-ED3D-4B2E-8336-228C2919A7CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1505EEC3-ED3D-4B2E-8336-228C2919A7CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B038F633-6619-406E-9BF6-427318E6D0F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B038F633-6619-406E-9BF6-427318E6D0F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B038F633-6619-406E-9BF6-427318E6D0F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B038F633-6619-406E-9BF6-427318E6D0F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
