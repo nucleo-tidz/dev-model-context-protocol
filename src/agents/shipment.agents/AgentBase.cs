@@ -19,7 +19,7 @@ namespace shipment.agents
             AIProjectClient projectClient = new AIProjectClient(new Uri(configuration["AgentProjectEndpoint"]), new DefaultAzureCredential(
                 new DefaultAzureCredentialOptions
                 {
-                    ExcludeVisualStudioCredential = false,
+                    ExcludeVisualStudioCredential = true,
                     ExcludeEnvironmentCredential = true,
                     ExcludeManagedIdentityCredential = true,
                     ExcludeInteractiveBrowserCredential = false,

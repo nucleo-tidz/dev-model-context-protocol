@@ -11,11 +11,11 @@ namespace infrastructure
             return services.AddTransient<Kernel>(serviceProvider =>
             {
                 IKernelBuilder kernelBuilder = Kernel.CreateBuilder();
-                kernelBuilder.Services.AddAzureOpenAIChatCompletion(deploymentName:"o4-mini",
-                  endpoint:configuration["o4-mini-url"],
-                  apiKey:configuration["o4-mini"],
-                  serviceId: "o4-mini",
-                   modelId:"o4-mini");
+                kernelBuilder.Services.AddAzureOpenAIChatCompletion("o4-mini",
+                  configuration["o4-mini-url"],
+                  configuration["o4-mini"],
+                   "o4-mini",
+                   "o4-mini");
                 return kernelBuilder.Build();
 
 
