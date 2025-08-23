@@ -1,4 +1,5 @@
-﻿using Microsoft.SemanticKernel;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents.Orchestration.GroupChat;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
@@ -11,7 +12,7 @@ namespace shipment.agents.Orchestrator
 {
 
     [Experimental("SKEXP0110")]
-    public class ShipmnetGroupManager(IChatCompletionService chatCompletion) : GroupChatManager
+    public class ShipmnetGroupManager(IChatCompletionService chatCompletion,ILogger<ShipmnetGroupManager> logger) : GroupChatManager
     {
         private const string VesselAgentName = nameof(VesselAgent);
         private const string CapacityAgentName = nameof(CapacityAgent);
@@ -62,7 +63,7 @@ namespace shipment.agents.Orchestrator
         {
             ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentSelection(team.FormatList()))];
             SelectionResponse? response = GetResponse<SelectionResponse>(request, cancellationToken);
-            Console.WriteLine("\n Orchestrator Selected " + response.agentName + " \n Selection Reason-: " + response.reason + "\n");
+            logger.LogInformation("\n Orchestrator Selected " + response.agentName + " \n Selection Reason-: " + response.reason + "\n");
             return ValueTask.FromResult(new GroupChatManagerResult<string>(response.agentName) { Reason = response.reason });
         }
         private T GetResponse<T>(ChatHistory request, CancellationToken cancellationToken)
@@ -77,7 +78,7 @@ namespace shipment.agents.Orchestrator
             ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, HumanIntervention)];
             var response = GetResponse<HumanSelectionResponse>(request, cancellationToken);
             GroupChatManagerResult<bool> result = new(response.shouldask) { Reason = response.reason };
-            Console.WriteLine("\n Human Intervention needed: " + (response.shouldask ? "Yes" : "No") + " ,\n Reason:" + response.reason + "\n");
+            logger.LogInformation("\n Human Intervention needed: " + (response.shouldask ? "Yes" : "No") + " ,\n Reason:" + response.reason + "\n");
             return ValueTask.FromResult(result);
         }
         public override ValueTask<GroupChatManagerResult<bool>> ShouldTerminate(ChatHistory history, CancellationToken cancellationToken = default)
@@ -90,7 +91,7 @@ namespace shipment.agents.Orchestrator
             ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentTermination)];
 
             TerminationResponse? response = GetResponse<TerminationResponse>(request, cancellationToken);
-            Console.WriteLine("\n Terminated: " + (response.shouldTerminate ? "Yes" : "No") + " ,\n Termination Reason:" + response.reason + "\n");
+            logger.LogInformation("\n Terminated: " + (response.shouldTerminate ? "Yes" : "No") + " ,\n Termination Reason:" + response.reason + "\n");
             return ValueTask.FromResult(new GroupChatManagerResult<bool>(response.shouldTerminate) { Reason = response.reason });
         }
     }

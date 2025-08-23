@@ -1,4 +1,7 @@
 ﻿using infrastructure.Service;
+using Microsoft.CognitiveServices.Speech.Audio;
+
+using Microsoft.CognitiveServices.Speech;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.SemanticKernel;
@@ -30,6 +33,32 @@ namespace infrastructure
         public static IServiceCollection AddMCPClientFactory(this IServiceCollection services)
         {
             return services.AddTransient<IMCPClientFactory, MCPClientFactory>();
+        }
+        public static IServiceCollection AddSpeech(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton(sp =>
+            {
+                var endpoint = configuration["Speech:Endpoint"];
+                var key = configuration["Speech:Key"];
+
+                // Use FromEndpoint if you really have a full endpoint URL in config
+                var config = SpeechConfig.FromEndpoint(new Uri(endpoint!), key);
+
+                config.SpeechRecognitionLanguage = "en-IN";
+                config.SpeechSynthesisVoiceName = "en-US-JennyNeural";
+                return config;
+            });
+
+            // Factory for creating new AudioConfig when needed
+            services.AddSingleton<Func<AudioConfig>>(_ =>
+                () => AudioConfig.FromDefaultMicrophoneInput()
+            );
+
+            // Register services that depend on SpeechConfig + AudioConfig
+            services.AddSingleton<ISpeechService, SpeechService>();
+            services.AddSingleton<IApprovalService, ApprovalService>();
+
+            return services;
         }
     }
 }
