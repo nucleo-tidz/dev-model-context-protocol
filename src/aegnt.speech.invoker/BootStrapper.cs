@@ -3,7 +3,6 @@
     using Azure;
 
     using Microsoft.CognitiveServices.Speech;
-    using Microsoft.CognitiveServices.Speech.Audio;
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.Agents.Orchestration;
     using Microsoft.SemanticKernel.Agents.Runtime.InProcess;
@@ -19,60 +18,58 @@
     using static System.Net.Mime.MediaTypeNames;
 
     [Experimental("SKEXP0110")]
-    
     public class BootStrapper : IBootStrapper
     {
         private readonly Kernel _kernel;
         private readonly IGroupAgent _groupAgent;
 
-        SpeechConfig _speechConfig;
-        SpeechRecognizer _recognizer;
-        SpeechSynthesizer _synthesizer;
+        private readonly SpeechRecognizer _recognizer;
+        private readonly SpeechSynthesizer _synthesizer;
+        private bool _inApprovalPhase = false;
+        private TaskCompletionSource<ChatMessageContent>? taskCompletionSource;
 
-        public BootStrapper(Kernel kernel,
-        IGroupAgent groupAgent,
-
-        SpeechRecognizer recognizer,
-        SpeechSynthesizer synthesizer)
+        public BootStrapper(
+            Kernel kernel,
+            IGroupAgent groupAgent,
+            SpeechRecognizer recognizer,
+            SpeechSynthesizer synthesizer)
         {
             _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
             _groupAgent = groupAgent ?? throw new ArgumentNullException(nameof(groupAgent));
-
-            _recognizer = recognizer;
-            _synthesizer = synthesizer;
-
+            _recognizer = recognizer ?? throw new ArgumentNullException(nameof(recognizer));
+            _synthesizer = synthesizer ?? throw new ArgumentNullException(nameof(synthesizer));
         }
 
         private ValueTask ResponseCallback(ChatMessageContent response)
         {
-            if (response.Content is not null)
+            if (!string.IsNullOrEmpty(response.Content))
             {
-                Speak(response.Content).Wait();
+                return new ValueTask(Speak(response.Content));
             }
             return ValueTask.CompletedTask;
         }
-        public async Task Speak(string response)
+
+        private async Task Speak(string response)
         {
             Console.WriteLine(response);
             await _recognizer.StopContinuousRecognitionAsync();
-            var result = await _synthesizer.SpeakTextAsync(response);
-
+            await _synthesizer.SpeakTextAsync(response);
             await _recognizer.StartContinuousRecognitionAsync();
         }
-        public static ValueTask<ChatMessageContent> InteractiveCallBack()
+
+
+        private ValueTask<ChatMessageContent> InteractiveCallBack()
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("===================================");
-            Console.WriteLine("Waiting for human to Approve");
-            ChatMessageContent input = new(AuthorRole.User, Console.ReadLine());
-            Console.WriteLine("===================================");
-            Console.ForegroundColor = ConsoleColor.White;
-            return ValueTask.FromResult(input);
+            Speak("Please approve the plan for me to create the bookking").Wait();
+            _inApprovalPhase = true;
+            taskCompletionSource = new TaskCompletionSource<ChatMessageContent>();
+            return new ValueTask<ChatMessageContent>(taskCompletionSource.Task);
         }
 
         public async Task StartGroupChatAsync(CancellationToken cancellationToken = default)
         {
-            Console.WriteLine("Start");
+            Console.WriteLine("Start speaking...");
+
             _recognizer.Recognizing += (s, e) =>
             {
                 Console.WriteLine($"[Partial] {e.Result.Text}");
@@ -80,11 +77,18 @@
 
             _recognizer.Recognized += async (s, e) =>
             {
-                if (e.Result.Reason == ResultReason.RecognizedSpeech)
+                if (e.Result.Reason == ResultReason.RecognizedSpeech &&
+                    !string.IsNullOrEmpty(e.Result.Text))
                 {
-                    if (!string.IsNullOrEmpty(e.Result.Text))
+                    Console.WriteLine($"[Final] {e.Result.Text}");
+
+                    if (_inApprovalPhase && taskCompletionSource is not null)
                     {
-                        Console.WriteLine($"[Final] {e.Result.Text}");
+                        taskCompletionSource.TrySetResult(new ChatMessageContent(AuthorRole.User, e.Result.Text));
+                        _inApprovalPhase = false;
+                    }
+                    else
+                    {
                         await CallSemanticKernel(e.Result.Text, cancellationToken);
                     }
                 }
@@ -93,7 +97,6 @@
             await _recognizer.StartContinuousRecognitionAsync();
             Console.ReadKey();
             await _recognizer.StopContinuousRecognitionAsync();
-
         }
 
         private async Task CallSemanticKernel(string query, CancellationToken cancellationToken)
@@ -105,9 +108,6 @@
             OrchestrationResult<string> result = await orchestration.InvokeAsync(query, runtime, cancellationToken);
             await result.GetValueAsync();
             await runtime.RunUntilIdleAsync();
-
-            Console.WriteLine("**************************Good bye from agents**************************");
-            Console.ReadLine();
         }
     }
 }

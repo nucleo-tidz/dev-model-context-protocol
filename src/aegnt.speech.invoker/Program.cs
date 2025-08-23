@@ -26,26 +26,22 @@ IHost host = Host.CreateDefaultBuilder(args)
 #pragma warning disable SKEXP0110
 
         services.AddTransient<IBootStrapper, BootStrapper>();
-
-        // ✅ Correct SpeechConfig registration
+    
         services.AddSingleton(sp =>
         {
             var speechConfig = SpeechConfig.FromEndpoint(
                 new Uri("https://centralindia.api.cognitive.microsoft.com/"),
                 config.Configuration["SpeechKey"]);
             speechConfig.SpeechRecognitionLanguage = "en-IN";
-            return speechConfig; // ✅ FIXED (was returning config)
+            return speechConfig;
         });
-
-        // ✅ Register SpeechRecognizer
+    
         services.AddTransient(sp =>
         {
             var speechConfig = sp.GetRequiredService<SpeechConfig>();
             var audioConfig = AudioConfig.FromDefaultMicrophoneInput();
             return new SpeechRecognizer(speechConfig, audioConfig);
         });
-
-        // ✅ Register SpeechSynthesizer
         services.AddTransient(sp =>
         {
             var speechConfig = sp.GetRequiredService<SpeechConfig>();
