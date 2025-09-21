@@ -4,6 +4,8 @@
     using Microsoft.SemanticKernel.Agents;
     using Microsoft.SemanticKernel.ChatCompletion;
 
+    using ModelContextProtocol.Client;
+
     public class ChatCompletionAgentBuilder
     {
         private Kernel _kernel;
@@ -14,7 +16,7 @@
         private IChatHistoryReducer _historyReducer;
         private KernelArguments _arguments;
         private readonly List<Action<Kernel>> _kernelConfigs = new();
-        private readonly List<(string pluginName, IEnumerable<KernelFunction> functions)> _mcpPlugins = new();
+        private List<(string Name, List<McpClientTool> Tools)> _mcpClientTools = new();
 
         public ChatCompletionAgentBuilder WithName(string name)
         {
@@ -57,9 +59,9 @@
             return this;
         }
 
-        public ChatCompletionAgentBuilder WithMCPPlugin(string pluginName, IEnumerable<KernelFunction> functions)
+        public ChatCompletionAgentBuilder WithMCPPlugin(string pluginName, IEnumerable<McpClientTool> mcpTools)
         {
-            _mcpPlugins.Add((pluginName, functions));
+            _mcpClientTools.Add((Name: pluginName, Tools: mcpTools.ToList()));
             return this;
         }
         public ChatCompletionAgentBuilder WithArgumnets(KernelArguments arg)
@@ -78,12 +80,12 @@
                     cfg(agentKernel);
                 }
             }
-            if (_mcpPlugins is not null && _mcpPlugins.Any())
+            if (_mcpClientTools is not null && _mcpClientTools.Any())
             {
-                foreach (var (pluginName, functions) in _mcpPlugins)
-                {
-                    agentKernel.Plugins.AddFromFunctions(pluginName, functions);
-                }
+#pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+                foreach (var (Name, Tools) in _mcpClientTools)
+                    agentKernel.Plugins.AddFromFunctions(Name, Tools.Select(_ => _.AsKernelFunction()));             
+#pragma warning restore SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
             }
 
 #pragma warning disable SKEXP0110 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
@@ -93,9 +95,7 @@
                 Instructions = _instructions,
                 Kernel = agentKernel,
                 Description = _description,
-                Arguments = _arguments,
-                Template = _template,
-                HistoryReducer = _historyReducer
+                Arguments = _arguments,     
             };
 #pragma warning restore SKEXP0110 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
         }

@@ -19,16 +19,38 @@ namespace shipment.agents.Vessel
             return new ChatCompletionAgentBuilder()
              .WithKernel(kernel)
              .WithName(nameof(VesselAgent))
-             .WithInstructions( @" You are an AI agent responsible for searching vessel between origin and destination.You will be provided with an origin city name and destination city name, 
+             .WithInstructions(@"You are an AI agent responsible for searching vessel between origin and destination.You will be provided with an origin city name and destination city name, 
                                   Do not assume or guess the origin or destination city name if it is not explicitly provided , Do not check capacity or generate booking that is not your job.
                                
                                Your workflow includes one steps:
-                               1. Find vessel between origin and destination city name.")
+                               1. Find vessel between origin and destination city name..")
              .WithDescription("AI agent responsible for searching vessel between origin and destination")
              .WithArgumnets(new KernelArguments(new PromptExecutionSettings() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(options: new() { RetainArgumentTypes = true }) }))
-             .WithMCPPlugin("VesselContainerTool", vesselTools.Select(_ => _.AsKernelFunction()))
+             .WithMCPPlugin("VesselContainerTool", vesselTools)
              .Build();
             
+        }
+
+        public ChatCompletionAgent Create1(Kernel kernel)
+        {
+            Kernel agentKernel = kernel.Clone();
+            var vesselClient = clientFactory.CreateVesselClient().GetAwaiter().GetResult();
+            var vesselTools = vesselClient.ListToolsAsync().GetAwaiter().GetResult();
+            agentKernel.Plugins.AddFromFunctions("VesselContainerTool", vesselTools.Select(_ => _.AsKernelFunction()));
+            return new ChatCompletionAgent()
+            {
+                Name = nameof(VesselAgent),
+                Instructions = @" You are an AI agent responsible for searching vessel between origin and destination.You will be provided with an origin city name and destination city name, 
+                                  Do not assume or guess the origin or destination city name if it is not explicitly provided , Do not check capacity or generate booking that is not your job.
+                               
+                               Your workflow includes one steps:
+                               1. Find vessel between origin and destination city name.",
+                Kernel = agentKernel,
+                Description = " AI agent responsible for searching vessel between origin and destination",
+
+
+                Arguments = new KernelArguments(new PromptExecutionSettings() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(options: new() { RetainArgumentTypes = true }) }),
+            };
         }
     }
 }

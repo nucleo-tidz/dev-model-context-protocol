@@ -24,7 +24,7 @@ namespace shipment.agents.Capacity
                                   Using this information, generate a valid booking for the container on the specified vessel between the given origin and destination.Ensure vessel has enough capacity to make the booking")
                 .WithDescription("AI agent which creates a shipment booking on vessels")
                 .WithArgumnets(new KernelArguments(new PromptExecutionSettings() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(options: new() { RetainArgumentTypes = true }) }))
-                .WithMCPPlugin("BookingAgentTool", bookingTools.Select(_ => _.AsKernelFunction()))
+                .WithMCPPlugin("BookingAgentTool", bookingTools)
                 .Build();
    
         }
