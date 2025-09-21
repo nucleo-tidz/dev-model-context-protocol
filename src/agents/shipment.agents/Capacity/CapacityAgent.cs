@@ -11,19 +11,17 @@ namespace shipment.agents.Capacity
     public class CapacityAgent(IMCPClientFactory clientFactory): IAgent
     {
         public ChatCompletionAgent Create(Kernel kernel)
-        {
-       
+        {       
             var capacityClient = clientFactory.CreateCapacityClient().GetAwaiter().GetResult();
             var capacityTools = capacityClient.ListToolsAsync().GetAwaiter().GetResult();
-
             return new ChatCompletionAgentBuilder()
             .WithKernel(kernel)
-            .WithName(nameof(VesselAgent))
+            .WithName(nameof(CapacityAgent))
             .WithInstructions(@" You are an AI agent responsible for finding the space left on a vessel.You will be provided with a vessel id from the Vessel Agent ,Do not generate booking that is not your job")
             .WithDescription("an AI agent responsible for finding the space left on a vessel")
             .WithArgumnets(new KernelArguments(new PromptExecutionSettings() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(options: new() { RetainArgumentTypes = true }) }))
             .WithMCPPlugin("CapacityContainerTool", capacityTools)
             .Build();
-        }
+        }       
     }
 }
