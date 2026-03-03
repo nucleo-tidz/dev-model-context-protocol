@@ -1,4 +1,7 @@
-﻿
+﻿using Microsoft.Agents.AI;
+using Microsoft.Agents.AI.Workflows;
+using Microsoft.Extensions.AI;
+using ModelContextProtocol.Protocol;
 using shipment.agents.Capacity;
 using shipment.agents.Vessel;
 using System.Diagnostics.CodeAnalysis;
@@ -7,8 +10,17 @@ using System.Text.Json;
 namespace shipment.agents.Orchestrator
 {
 
-    public class ShipmnetGroupManager() 
+    public class ShipmnetGroupManager : RoundRobinGroupChatManager
     {
+        IChatClient _chatClient;
+        IReadOnlyList<AIAgent> aIAgents;
+        public ShipmnetGroupManager(IReadOnlyList<AIAgent> agents,IChatClient chatClient)
+        : base(agents)
+        {
+            _chatClient = chatClient;
+            aIAgents = agents;
+        }
+
 
         private const string VesselAgentName = nameof(VesselAgent);
         private const string CapacityAgentName = nameof(CapacityAgent);
@@ -40,6 +52,40 @@ namespace shipment.agents.Orchestrator
                 {participants}
                 Please respond with only  name of the Agent along with your reason to select the agent.
                 """;
-       
+
+        protected override ValueTask<bool> ShouldTerminateAsync(IReadOnlyList<ChatMessage> history, CancellationToken cancellationToken = default)
+        {
+            List<ChatMessage> request = [.. history, new ChatMessage(ChatRole.System, AgentTermination)];
+            TerminationResponse? response = GetResponse<TerminationResponse>(request, cancellationToken);
+            return ValueTask.FromResult(response.shouldTerminate);
+        }
+        protected internal override ValueTask<AIAgent> SelectNextAgentAsync(IReadOnlyList<ChatMessage> history, CancellationToken cancellationToken = default)
+        {
+            
+            List<ChatMessage> request = [.. history, new ChatMessage(ChatRole.System, AgentSelection(""))];
+            SelectionResponse? response = GetResponse<SelectionResponse>(request, cancellationToken);
+            if(response.agentName == VesselAgentName)
+            {
+                return ValueTask.FromResult(aIAgents.First(a => a.Name == VesselAgentName));
+            }
+            else if(response.agentName == CapacityAgentName)
+            {
+                return ValueTask.FromResult(aIAgents.First(a => a.Name == CapacityAgentName));
+            }
+            else if(response.agentName == BookingAgentName)
+            {
+                return ValueTask.FromResult(aIAgents.First(a => a.Name == BookingAgentName));
+            }
+            else
+            {
+                throw new InvalidOperationException($"Invalid agent name: {response.agentName}");
+            }
+
+        }
+        private T GetResponse<T>(IEnumerable<ChatMessage> history, CancellationToken cancellationToken)
+        {
+           ChatResponse response= _chatClient.GetResponseAsync(history).GetAwaiter().GetResult();
+            return JsonSerializer.Deserialize<T>(response.Text);
+        }
     }
 }

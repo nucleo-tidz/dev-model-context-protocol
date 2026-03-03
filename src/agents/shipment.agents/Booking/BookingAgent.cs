@@ -24,6 +24,7 @@ namespace shipment.agents.Capacity
                     Tools = [.. tools]
                 },
                 Description = "AI agent which creates a shipment booking on vessels",
+                Name = nameof(BookingAgent),
                 ChatHistoryProvider = new InMemoryChatHistoryProvider(),
             });
         }

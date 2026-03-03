@@ -1,6 +1,7 @@
 ﻿using infrastructure;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
+using shipment.agents.Capacity;
 
 namespace shipment.agents.Vessel
 {
@@ -25,6 +26,7 @@ namespace shipment.agents.Vessel
                 },
                 Description = "AI agent responsible for searching vessel between origin and destination",
                 ChatHistoryProvider = new InMemoryChatHistoryProvider(),
+                Name = nameof(VesselAgent),
             });
         }
 

@@ -20,6 +20,7 @@ namespace shipment.agents.Capacity
                     Tools = [.. tools]
                 },
                 Description = "AI agent responsible for finding the space left on a vessel",
+                Name = nameof(CapacityAgent),
                 ChatHistoryProvider = new InMemoryChatHistoryProvider(),
             });
         }

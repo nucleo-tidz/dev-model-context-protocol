@@ -5,16 +5,17 @@
 
     public class GroupAgent(IEnumerable<IAgent> agents) : IGroupAgent
     {   
-        public void Create()
+        public async Task<Workflow> Create()
         {
-            var shipmentAgents = agents.Select(agent => agent.Create()).ToList();
-            var workflow = AgentWorkflowBuilder.CreateGroupChatBuilderWith(agents =>
-             new RoundRobinGroupChatManager(agents)
-             {
-                 MaximumIterationCount = 5  
-             })
-    .     AddParticipants(shipmentAgents.AsEnumerable<AIAgent>)
-    .     Build();
+            var shipmentAgents = agents.Select(agent => agent.Create()).ToArray();
+            var createdAgents = await Task.WhenAll(shipmentAgents);
+            return AgentWorkflowBuilder.CreateGroupChatBuilderWith(agents =>
+                new RoundRobinGroupChatManager(agents)
+                {
+                    MaximumIterationCount = 4 
+                })
+                .AddParticipants(createdAgents)
+                .Build();
         }
     }
 }
