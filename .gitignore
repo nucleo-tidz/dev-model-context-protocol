@@ -14,3 +14,4 @@
 *.pubxml
 /volumes
 /src/agent.invoker/appsettings.local.json
+/src/converse/appsettings.local.json
