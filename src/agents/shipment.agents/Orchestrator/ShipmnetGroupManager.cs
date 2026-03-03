@@ -59,7 +59,7 @@ namespace shipment.agents.Orchestrator
             TerminationResponse? response = GetResponse<TerminationResponse>(request, cancellationToken);
             return ValueTask.FromResult(response.shouldTerminate);
         }
-        protected internal override ValueTask<AIAgent> SelectNextAgentAsync(IReadOnlyList<ChatMessage> history, CancellationToken cancellationToken = default)
+        protected  override ValueTask<AIAgent> SelectNextAgentAsync(IReadOnlyList<ChatMessage> history, CancellationToken cancellationToken = default)
         {
             
             List<ChatMessage> request = [.. history, new ChatMessage(ChatRole.System, AgentSelection(""))];
