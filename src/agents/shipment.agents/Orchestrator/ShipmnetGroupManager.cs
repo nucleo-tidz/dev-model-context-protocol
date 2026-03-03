@@ -1,7 +1,4 @@
-﻿using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Agents.Orchestration.GroupChat;
-using Microsoft.SemanticKernel.ChatCompletion;
-using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
+﻿
 using shipment.agents.Capacity;
 using shipment.agents.Vessel;
 using System.Diagnostics.CodeAnalysis;
@@ -10,8 +7,7 @@ using System.Text.Json;
 namespace shipment.agents.Orchestrator
 {
 
-    [Experimental("SKEXP0110")]
-    public class ShipmnetGroupManager(IChatCompletionService chatCompletion) : GroupChatManager
+    public class ShipmnetGroupManager() 
     {
 
         private const string VesselAgentName = nameof(VesselAgent);
@@ -44,44 +40,6 @@ namespace shipment.agents.Orchestrator
                 {participants}
                 Please respond with only  name of the Agent along with your reason to select the agent.
                 """;
-        public override ValueTask<GroupChatManagerResult<string>> FilterResults(ChatHistory history, CancellationToken cancellationToken = default)
-        {
-
-
-            GroupChatManagerResult<string> result = new(history.LastOrDefault()?.Content ?? string.Empty) { Reason = "Default result filter provides the final chat message." };
-            return ValueTask.FromResult(result);
-        }
-        public override ValueTask<GroupChatManagerResult<string>> SelectNextAgent(ChatHistory history, GroupChatTeam team, CancellationToken cancellationToken = default)
-        {
-            ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentSelection(team.FormatList()))];
-            SelectionResponse? response = GetResponse<SelectionResponse>(request, cancellationToken);
-            Console.WriteLine("\n Orchestrator Selected " + response.agentName + " \n Selection Reason-: " + response.reason + "\n");
-            return ValueTask.FromResult(new GroupChatManagerResult<string>(response.agentName) { Reason = response.reason });
-        }
-        private T GetResponse<T>(ChatHistory request, CancellationToken cancellationToken)
-        {
-            var result = chatCompletion.GetChatMessageContentsAsync(request, new AzureOpenAIPromptExecutionSettings() { ResponseFormat = typeof(T) }, kernel: null, cancellationToken)
-                .GetAwaiter()
-                .GetResult();
-            return JsonSerializer.Deserialize<T>(result[0].Content.ToString());
-        }
-        public override ValueTask<GroupChatManagerResult<bool>> ShouldRequestUserInput(ChatHistory history, CancellationToken cancellationToken = default)
-        {
-            GroupChatManagerResult<bool> result = new(false) { Reason = "The group chat manager does not request user input." };
-            return ValueTask.FromResult(result);
-        }
-        public override ValueTask<GroupChatManagerResult<bool>> ShouldTerminate(ChatHistory history, CancellationToken cancellationToken = default)
-        {
-            var baseResult = base.ShouldTerminate(history, cancellationToken).Result;
-            if (baseResult.Value)
-            {
-                return ValueTask.FromResult(baseResult);
-            }
-            ChatHistory request = [.. history, new ChatMessageContent(AuthorRole.System, AgentTermination)];
-
-            TerminationResponse? response = GetResponse<TerminationResponse>(request, cancellationToken);
-            Console.WriteLine("\n Terminated: " + (response.shouldTerminate ? "Yes" : "No") + " ,\n Termination Reason:" + response.reason + "\n");
-            return ValueTask.FromResult(new GroupChatManagerResult<bool>(response.shouldTerminate) { Reason = response.reason });
-        }
+       
     }
 }

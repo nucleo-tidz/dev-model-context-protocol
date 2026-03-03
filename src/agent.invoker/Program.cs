@@ -16,7 +16,7 @@ IHost host = Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((config, services) =>
     {
-        services.AddSemanticKernel(config.Configuration);
+        services.AddAgents(config.Configuration);
         services.AddMCPClientFactory();
         services.AddAzureTokenClient(config.Configuration);
         services.AddAgents();

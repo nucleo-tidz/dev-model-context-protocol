@@ -4,9 +4,9 @@ namespace infrastructure
 {
     public interface IMCPClientFactory
     {
-        Task<IMcpClient> CreateContainerClient();
-         Task<IMcpClient> CreateVesselClient();
-        Task<IMcpClient> CreateBookingClient();
-        Task<IMcpClient> CreateCapacityClient();
+        Task<McpClient> CreateContainerClient();
+         Task<McpClient> CreateVesselClient();
+        Task<McpClient> CreateBookingClient();
+        Task<McpClient> CreateCapacityClient();
     }
 }

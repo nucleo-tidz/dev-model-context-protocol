@@ -1,73 +1,80 @@
 ﻿using infrastructure.Service;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using ModelContextProtocol.Client;
+using System.Net.Http.Headers;
 
 namespace infrastructure
 {
-    public class MCPClientFactory(IAccessTokenService accessTokenService): IMCPClientFactory
+    public class MCPClientFactory(IAccessTokenService accessTokenService, IConfiguration configuration) : IMCPClientFactory
     {
-        public async Task<IMcpClient> CreateContainerClient()
+        public async Task<McpClient> CreateContainerClient()
         {
-           string token= await accessTokenService.GetAccessTokenAsync();
-            var clientTransport = new SseClientTransport(
-                     new SseClientTransportOptions
-                     {
-                         UseStreamableHttp=true,
-                         Endpoint = new Uri("https://localhost:7196"),
-                         AdditionalHeaders = new Dictionary<string, string> {
-                           { "Authorization", $"Bearer {token}" }
-                               },
-                        
-                     }
-                 );
 
-            return await McpClientFactory.CreateAsync(clientTransport);
+            var httpClient = new HttpClient(new BearerTokenHandler(accessTokenService));
+            var httpTransport = new HttpClientTransport(new HttpClientTransportOptions
+            {
+                Endpoint = new Uri("https://localhost:7196"),
+                TransportMode = HttpTransportMode.StreamableHttp,
+            }, httpClient: httpClient);
+
+            return await McpClient.CreateAsync(httpTransport);
+         
         }
 
-        public async Task<IMcpClient> CreateVesselClient()
+        public async Task<McpClient> CreateVesselClient()
         {
-            string token = await accessTokenService.GetAccessTokenAsync();
-            var clientTransport = new SseClientTransport(
-                     new SseClientTransportOptions
-                     {
-                         UseStreamableHttp = true,
-                         Endpoint = new Uri("https://localhost:7289"),
-                         AdditionalHeaders =new Dictionary<string, string> {
-                               { "Authorization", $"Bearer {token}" }
-                               }
-                     }
-                 );
-            return await McpClientFactory.CreateAsync(clientTransport);
+            var httpClient = new HttpClient(new BearerTokenHandler(accessTokenService));
+            var httpTransport = new HttpClientTransport(new HttpClientTransportOptions
+            {
+                Endpoint = new Uri("https://localhost:7289"),
+                TransportMode = HttpTransportMode.StreamableHttp,
+            }, httpClient: httpClient);
+
+            return await McpClient.CreateAsync(httpTransport);
+          
         }
 
-        public async Task<IMcpClient> CreateBookingClient()
+        public async Task<McpClient> CreateBookingClient()
         {
-            string token = await accessTokenService.GetAccessTokenAsync();
-            var clientTransport = new SseClientTransport(
-                     new SseClientTransportOptions
-                     {
-                         UseStreamableHttp = true,
-                         Endpoint = new Uri("https://localhost:7044"),
-                         AdditionalHeaders = new Dictionary<string, string> {
-                                { "Authorization", $"Bearer {token}" }
-                               }
-                     }
-                 );
-            return await McpClientFactory.CreateAsync(clientTransport);
+            var httpClient = new HttpClient(new BearerTokenHandler(accessTokenService));
+            var httpTransport = new HttpClientTransport(new HttpClientTransportOptions
+            {
+                Endpoint = new Uri("https://localhost:7044"),
+                TransportMode = HttpTransportMode.StreamableHttp,
+            }, httpClient: httpClient);
+
+            return await McpClient.CreateAsync(httpTransport);
         }
-        public async Task<IMcpClient> CreateCapacityClient()
+        public async Task<McpClient> CreateCapacityClient()
         {
-            string token = await accessTokenService.GetAccessTokenAsync();
-            var clientTransport = new SseClientTransport(
-                     new SseClientTransportOptions
-                     {
-                         UseStreamableHttp = true,
-                         Endpoint = new Uri("https://localhost:7061"),
-                         AdditionalHeaders = new Dictionary<string, string> {
-                               { "Authorization", $"Bearer {token}" }
-                               }
-                     }
-                 );
-            return await McpClientFactory.CreateAsync(clientTransport);
+            var httpClient = new HttpClient(new BearerTokenHandler(accessTokenService));
+            var httpTransport = new HttpClientTransport(new HttpClientTransportOptions
+            {
+                Endpoint = new Uri("https://localhost:7061"),
+                TransportMode = HttpTransportMode.StreamableHttp,
+            }, httpClient: httpClient);
+
+            return await McpClient.CreateAsync(httpTransport);
+        }
+    }
+
+    internal sealed class BearerTokenHandler : DelegatingHandler
+    {
+        private readonly IAccessTokenService _accessTokenService;
+
+        public BearerTokenHandler(IAccessTokenService accessTokenService)
+        {
+            InnerHandler = new HttpClientHandler();
+            _accessTokenService = accessTokenService;
+        }
+        protected override async Task<HttpResponseMessage> SendAsync(
+           HttpRequestMessage request,
+           CancellationToken cancellationToken)
+        {
+            var accessToken = await _accessTokenService.GetAccessTokenAsync(cancellationToken);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            return await base.SendAsync(request, cancellationToken);
         }
     }
 }

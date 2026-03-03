@@ -8,6 +8,6 @@ namespace infrastructure.Service
 {
     public interface IAccessTokenService
     {
-        Task<string> GetAccessTokenAsync();
+        Task<string> GetAccessTokenAsync(CancellationToken cancellationToken);
     }
 }

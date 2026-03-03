@@ -1,10 +1,16 @@
+
+
+using capacity.api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using capacity.api;
+
+using ModelContextProtocol.Protocol;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddMcpServer().WithHttpTransport(o => o.Stateless = true).WithTools<CapacityTool>();
+builder.Services.AddMcpServer().WithHttpTransport()
+    .WithTools<CapacityTool>()
+.AddAuthorizationFilters();
+#region Auth
 var authSetting = builder.Configuration.GetSection("Jwt");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -17,20 +23,30 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuers = authSetting.GetSection("ValidIssuers").Get<string[]>()
+            ValidIssuers = authSetting.GetSection("ValidIssuers").Get<string[]>(),
+
         };
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine("Authentication failed: " + context.Exception.Message);
+                return Task.CompletedTask;
+            },
+            OnTokenValidated = context =>
+            {
+                Console.WriteLine("Token validated for: " + context.Principal.Identity?.Name);
+                return Task.CompletedTask;
+            },
+
+        };
+
     });
 builder.Services.AddAuthorization();
-
+#endregion
 var app = builder.Build();
-
-app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapMcp().RequireAuthorization(policy =>
-{
-    policy.RequireAuthenticatedUser();
-    //policy.RequireRole("mcp.read"); 
-});
+app.MapMcp().RequireAuthorization();
+app.UseHttpsRedirection();
 app.Run();
