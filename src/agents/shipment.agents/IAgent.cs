@@ -1,7 +1,9 @@
-﻿namespace shipment.agents
+﻿using Microsoft.Agents.AI;
+
+namespace shipment.agents
 {
     public interface IAgent
     {
-       // ChatCompletionAgent Create(Kernel kernel);
+        Task<AIAgent> Create();
     }
 }

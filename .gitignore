@@ -13,3 +13,4 @@
 *.log
 *.pubxml
 /volumes
+/src/agent.invoker/appsettings.local.json

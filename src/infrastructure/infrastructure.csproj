@@ -6,12 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 	<ItemGroup>
+	<PackageReference Include="Azure.AI.OpenAI" Version="2.1.0" />
 	<PackageReference Include="Dapper" Version="2.1.35" />
+	<PackageReference Include="Microsoft.Agents.AI.AzureAI" Version="1.0.0-rc2" />
+	<PackageReference Include="Microsoft.Agents.AI.Workflows" Version="1.0.0-rc2" />
 	<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
+	<PackageReference Include="Microsoft.Extensions.AI" Version="10.3.0" />
+	<PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="10.3.0" />
 	<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.3" />
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.3" />
 	<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.3" />
-	<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.3" />		
+	<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.3" />
+	<PackageReference Include="Microsoft.Identity.Client" Version="4.82.1" />		
 	<PackageReference Include="ModelContextProtocol" Version="1.0.0" />
 
 	</ItemGroup>

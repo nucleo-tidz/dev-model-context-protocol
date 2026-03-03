@@ -11,6 +11,7 @@ namespace infrastructure
         public async Task<McpClient> CreateContainerClient()
         {
 
+
             var httpClient = new HttpClient(new BearerTokenHandler(accessTokenService));
             var httpTransport = new HttpClientTransport(new HttpClientTransportOptions
             {
