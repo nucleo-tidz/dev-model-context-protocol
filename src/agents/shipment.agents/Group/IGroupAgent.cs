@@ -1,10 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Microsoft.Agents.AI.Workflows;
+using System.Diagnostics.CodeAnalysis;
 
 namespace shipment.agents.Group
 {
    
     public interface IGroupAgent
     {
-       // GroupChatOrchestration CreateAgentGroupChat( OrchestrationResponseCallback responseCallback);
+        Task<Workflow> Create();
     }
 }

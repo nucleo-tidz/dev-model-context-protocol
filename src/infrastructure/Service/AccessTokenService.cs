@@ -30,6 +30,7 @@ namespace infrastructure.Service
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
+            _memoryCache = memoryCache;
         }
 
         public async Task<string> GetAccessTokenAsync(CancellationToken cancellationToken)

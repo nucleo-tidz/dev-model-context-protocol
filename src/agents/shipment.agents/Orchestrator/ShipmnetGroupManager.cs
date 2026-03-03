@@ -21,6 +21,10 @@ namespace shipment.agents.Orchestrator
             aIAgents = agents;
         }
 
+        private string FormatAgentList()
+        {
+            return string.Join(Environment.NewLine, aIAgents.Select(agent => $"Agent Name - {agent.Name} - Agent Description {agent.Description}"));
+        }
 
         private const string VesselAgentName = nameof(VesselAgent);
         private const string CapacityAgentName = nameof(CapacityAgent);
@@ -37,6 +41,7 @@ namespace shipment.agents.Orchestrator
             - Terminate the agent if the vessel remaining capacity is 0 TEU and  {CapacityAgentName} has already run., if remaining capacity is more than 0 TEU like 100 TEU DO NOT Terminate 
             - Terminate if booking is created by {BookingAgentName} and Bookind Id is generated
              Use the chat history to understand the current state and make an informed decision ,To terminate the agent respond  true along with your reason to terminate 
+             your response should be in json format  with property "shouldTerminate": true and  "reason": "reason for termination" .
             """;
         public static string AgentSelection(string participants) =>
                 $"""
@@ -50,19 +55,20 @@ namespace shipment.agents.Orchestrator
 
                 Below are the available agents with their descriptions:
                 {participants}
-                Please respond with only  name of the Agent along with your reason to select the agent.
+                your response should be in json format  with property "agentName": name of the agent and  "reason": "reason for termination.
                 """;
 
         protected override ValueTask<bool> ShouldTerminateAsync(IReadOnlyList<ChatMessage> history, CancellationToken cancellationToken = default)
         {
             List<ChatMessage> request = [.. history, new ChatMessage(ChatRole.System, AgentTermination)];
             TerminationResponse? response = GetResponse<TerminationResponse>(request, cancellationToken);
+            
             return ValueTask.FromResult(response.shouldTerminate);
         }
         protected  override ValueTask<AIAgent> SelectNextAgentAsync(IReadOnlyList<ChatMessage> history, CancellationToken cancellationToken = default)
         {
-            
-            List<ChatMessage> request = [.. history, new ChatMessage(ChatRole.System, AgentSelection(""))];
+
+            List<ChatMessage> request = [.. history, new ChatMessage(ChatRole.System, AgentSelection(FormatAgentList()))];
             SelectionResponse? response = GetResponse<SelectionResponse>(request, cancellationToken);
             if(response.agentName == VesselAgentName)
             {

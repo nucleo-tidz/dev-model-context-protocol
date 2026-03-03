@@ -13,7 +13,8 @@ namespace shipment.agents
         {
             return services.AddTransient<IAgent, VesselAgent>()
                 .AddTransient<IAgent, CapacityAgent>()
-                .AddTransient<IAgent, BookingAgent>().AddTransient<IGroupAgent,GroupAgent>();
+                .AddTransient<IAgent, BookingAgent>()
+                .AddTransient<IGroupAgent,GroupAgent>();
         }        
     }
 }
