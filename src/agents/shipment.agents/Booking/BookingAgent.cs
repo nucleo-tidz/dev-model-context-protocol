@@ -10,6 +10,12 @@ namespace shipment.agents.Capacity
         {
             var client = await clientFactory.CreateBookingClient();
             var tools = await client.ListToolsAsync();
+            IList<AITool> aiTools = new List<AITool>();
+            foreach (var item in tools)
+            {
+                aiTools.Add(new ApprovalRequiredAIFunction(item));
+            }
+
             return chatClient.AsAIAgent(new ChatClientAgentOptions
             {
                 ChatOptions = new ChatOptions()
@@ -21,7 +27,7 @@ namespace shipment.agents.Capacity
                                   - Destination City
                                   Using this information, generate a valid booking for the container on the specified vessel between the given origin and destination.Ensure vessel has enough capacity to make the booking",
                     ToolMode = ChatToolMode.Auto,
-                    Tools = [.. tools]
+                    Tools = aiTools
                 },
                 Description = "AI agent which creates a shipment booking on vessels",
                 Name = nameof(BookingAgent),

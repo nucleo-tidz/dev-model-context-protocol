@@ -13,31 +13,46 @@
         public async Task Run()
         {
             var workflow = await groupAgent.Create();
-            string usermessage = Console.ReadLine();
+            string usermessage = "book me a 20DRY container from shanghai to copenhagen";
             await using StreamingRun run = await InProcessExecution.Lockstep.RunStreamingAsync(workflow, usermessage);
             await run.TrySendMessageAsync(new TurnToken(emitEvents: true));
 
             await foreach (WorkflowEvent evt in run.WatchStreamAsync().ConfigureAwait(false))
             {
-                if (evt is AgentResponseUpdateEvent update)
+                if (evt is RequestInfoEvent info)
                 {
-                    // Process streaming agent responses
-                    AgentResponse response = update.AsResponse();
-                    foreach (ChatMessage message in response.Messages)
+                    if (info.Request.TryGetDataAs(out FunctionApprovalRequestContent? approvalRequestContent))
                     {
-                        Console.WriteLine($"[{update.ExecutorId}]: {message.Text}");
+                        Console.WriteLine("Kindly press Y to approve N to reject");
+                        string? userInput = Console.ReadLine();
+                        bool isApproved = userInput?.Trim().ToUpper() == "Y";
+                        await run.SendResponseAsync(info.Request.CreateResponse(approvalRequestContent.CreateResponse(approved: isApproved)));
                     }
+
                 }
+                
+                //else if (evt is AgentResponseUpdateEvent update)
+                //{
+
+                //    AgentResponse response = update.AsResponse();
+                //    foreach (ChatMessage message in response.Messages)
+                //    {
+                //        //Console.WriteLine($"[{update.ExecutorId}]: {message.Text}");
+                //    }
+                //}
                 else if (evt is WorkflowOutputEvent output)
                 {
-                    // Workflow completed
                     var conversationHistory = output.As<List<ChatMessage>>();
+                    if (conversationHistory is null)
+                        continue;
                     Console.WriteLine("\n=== Final Conversation ===");
                     foreach (var message in conversationHistory)
                     {
                         Console.WriteLine($"{message.AuthorName}: {message.Text}");
                     }
+                    Console.ReadLine();
                     break;
+
                 }
             }
         }
