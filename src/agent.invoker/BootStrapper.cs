@@ -13,7 +13,7 @@
         public async Task Run()
         {
             var workflow = await groupAgent.Create();
-            string usermessage = "book me a 20DRY container from shanghai to bangalore";
+            string usermessage = "book me a 20DRY container from shanghai to Copenhagen";
             await using StreamingRun run = await InProcessExecution.Lockstep.RunStreamingAsync(workflow, usermessage);
             await run.TrySendMessageAsync(new TurnToken(emitEvents: true));
 

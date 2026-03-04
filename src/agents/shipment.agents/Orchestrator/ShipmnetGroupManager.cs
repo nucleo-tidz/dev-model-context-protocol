@@ -61,10 +61,10 @@ namespace shipment.agents.Orchestrator
                 Use the chat history to understand the current state and make an informed decision.
                 
                 **STRICT WORKFLOW ORDER - FOLLOW THESE STEPS SEQUENTIALLY:**
-                1. {VesselAgentName} - Find a vessel between origin and destination (MUST BE FIRST)
-                2. {CapacityAgentName} - Check vessel capacity (MUST BE AFTER vessel is found, BEFORE locking space)
-                3. {VesselAgentName} - Lock vessel space (ONLY AFTER capacity is confirmed)
-                4. {BookingAgentName} - Create shipment booking (ONLY AFTER space is locked)
+                1.  Find a vessel between origin and destination (MUST BE FIRST)
+                2.Check vessel capacity (MUST BE AFTER vessel is found, BEFORE locking space)
+                3.Lock vessel space (ONLY AFTER capacity is confirmed)
+                4.  Create shipment booking (ONLY AFTER space is locked)
 
                 **IMPORTANT RULES:**
                 - Do NOT skip {CapacityAgentName} - capacity check is MANDATORY before locking space
