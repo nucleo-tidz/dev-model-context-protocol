@@ -32,16 +32,28 @@ namespace shipment.agents.Orchestrator
         public record TerminationResponse(string reason, bool shouldTerminate);
         public record SelectionResponse(string agentName, string reason);
         public static string AgentTermination = $"""
-            You are an Agent Terminator, responsible for deciding whether an active agent should be terminated based on the container booking context.
+            You are an Agent Terminator, responsible for deciding whether the workflow should be terminated based on the container booking context.
             Use the chat history to assess the current state and follow these rules to make your decision:
-            -Only apply termination logic if the agent has already been executed use AuthorName property of chat history to find which agent has run.
-              do not evaluate whether vessel information exists unless the {VesselAgentName} has already run ,.
-              do not evaluate whether capacity  exists unless the {CapacityAgentName} has already run .
-            - Terminate the agent If the vessel information is missing and {VesselAgentName} has already run , DO NOT assume that vessel information is wrong or fictious if a vessel id is present 
-            - Terminate the agent if the vessel remaining capacity is 0 TEU and  {CapacityAgentName} has already run., if remaining capacity is more than 0 TEU like 100 TEU DO NOT Terminate 
-            - Terminate if booking is created by {BookingAgentName} and Bookind Id is generated
-             Use the chat history to understand the current state and make an informed decision ,To terminate the agent respond  true along with your reason to terminate 
-             your response should be in json format  with property "shouldTerminate": true and  "reason": "reason for termination" .
+            
+            **TERMINATION CONDITIONS - ALL must be met to terminate:**
+            1. Vessel MUST have been found by {VesselAgentName} (look for VesselId in history)
+            2. Capacity MUST have been checked by {CapacityAgentName} (look for {CapacityAgentName} in AuthorName and capacity information like "TEU")
+            3. Vessel space MUST have been locked (look for "LockVesselSpace" or "locked" in history from {VesselAgentName})
+            4. Booking MUST have been created by {BookingAgentName} (look for "Booking ID" or "BE-" in history from {BookingAgentName})
+            
+            **ONLY TERMINATE IF:**
+            - ALL 4 steps above are completed AND booking was successful, OR
+            - Vessel was not found (null/empty) after {VesselAgentName} ran, OR
+            - Capacity is 0 TEU after {CapacityAgentName} ran
+            
+            **DO NOT TERMINATE IF:**
+            - Booking has not been created yet (even if vessel is found, capacity checked, and space locked)
+            - {BookingAgentName} has not run yet
+            - Workflow is still in progress
+            
+            Carefully analyze the chat history. Look at the AuthorName field to see which agents have run.
+            To terminate, respond with true along with your reason.
+            Your response should be in json format with property "shouldTerminate": true/false and "reason": "detailed reason for your decision".
             """;
         public static string AgentSelection(string participants) =>
                 $"""

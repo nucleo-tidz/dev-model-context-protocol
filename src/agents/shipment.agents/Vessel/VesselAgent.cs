@@ -16,16 +16,21 @@ namespace shipment.agents.Vessel
             {
                 ChatOptions = new ChatOptions()
                 {
-                    Instructions = @"You are an AI agent responsible for searching vessel between origin and destination and locking space on vessel.You will be provided with an origin city name and destination city name, 
-                                  Do not assume or guess the origin or destination city name if it is not explicitly provided , Do not check capacity or generate booking that is not your job.
-                               
-                               Your workflow includes two steps:
-                               1. Find vessel between origin and destination city name..
-                               2. Lock space on vessel for a given vessel ID.",
+                    Instructions = @"You are an AI agent responsible for vessel operations: finding vessels and locking space.
+                                                          
+                               If NO vessel has been found yet:
+                               - ONLY use GetVessel to find a vessel between origin and destination
+                               - Do NOT lock space in the same turn
+                               - Stop after finding the vessel                               
+                               If a vessel HAS been found AND capacity has been confirmed:
+                               - ONLY use LockVesselSpace to lock space on the vessel
+                               - Use the VesselId from the conversation history
+                               - Stop after locking space                               
+                               Do not check capacity or create bookings - that is not your job.",
                     ToolMode = ChatToolMode.Auto,
                     Tools = [.. tools]
                 },
-                Description = "AI agent responsible for searching vessel between origin and destination and also to lock space on vessel",
+                Description = "AI agent responsible for searching vessel between origin and destination and locking space on vessel",
                 ChatHistoryProvider = new InMemoryChatHistoryProvider(),
                 Name = nameof(VesselAgent),
             });
