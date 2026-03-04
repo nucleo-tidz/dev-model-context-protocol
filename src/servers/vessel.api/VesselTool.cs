@@ -16,5 +16,11 @@
             return
                 new VeeselDetail { VesselId = "VE-1234", VesselName = "Marina", ArrivalDate = DateTime.Now.AddDays(2), DepartureDate = DateTime.Now.AddDays(15) };
         }
+
+        [McpServerTool, Description("Lock  vessel Space for booking")]
+        public bool LockVesselSpace(string vesselId)
+        {
+            return true;
+        }
     }
 }

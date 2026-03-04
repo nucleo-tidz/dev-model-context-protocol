@@ -14,7 +14,7 @@
             return AgentWorkflowBuilder.CreateGroupChatBuilderWith(agents =>
                 new ShipmnetGroupManager(agents, chatClient)
                 {
-                    MaximumIterationCount = 4 
+                    MaximumIterationCount = 61 
                 })
                 .AddParticipants(createdAgents)
                 .Build();

@@ -45,17 +45,32 @@ namespace shipment.agents.Orchestrator
             """;
         public static string AgentSelection(string participants) =>
                 $"""
-                You are an Agent Selector, responsible for choosing the most appropriate agent to handle the next step in a container booking workflow. Use the chat history to understand the current state and make an informed decision.
-                Avoid unnecessary agent selection — for example, do not select the Capacity  Agent if vessel capacity has already been confirmed. The required steps in a typical container booking process are:
-                - Find a Vessel
-                -  Check Vessel Capacity
-                - Create Shipment Booking on Vessel
+                You are an Agent Selector, responsible for choosing the most appropriate agent to handle the next step in a container booking workflow. 
+                Use the chat history to understand the current state and make an informed decision.
+                
+                **STRICT WORKFLOW ORDER - FOLLOW THESE STEPS SEQUENTIALLY:**
+                1. {VesselAgentName} - Find a vessel between origin and destination (MUST BE FIRST)
+                2. {CapacityAgentName} - Check vessel capacity (MUST BE AFTER vessel is found, BEFORE locking space)
+                3. {VesselAgentName} - Lock vessel space (ONLY AFTER capacity is confirmed)
+                4. {BookingAgentName} - Create shipment booking (ONLY AFTER space is locked)
 
-                Your task is to choose the next best agent to continue the process based on what's already been completed.
+                **IMPORTANT RULES:**
+                - Do NOT skip {CapacityAgentName} - capacity check is MANDATORY before locking space
+                - {CapacityAgentName} can ONLY run if vessel information (VesselId) exists in chat history
+                - Do NOT lock vessel space until capacity has been checked
+                - Do NOT create booking until space is locked
+                - The {VesselAgentName} will be called TWICE: once to find vessel, once to lock space
+
+                **Current State Analysis:**
+                - Check if vessel has been found (look for VesselId in history)
+                - Check if capacity has been checked (look for {CapacityAgentName} in AuthorName)
+                - Check if space has been locked (look for "LockVesselSpace" or "space locked" in history)
+                - Check if booking has been created (look for Booking ID in history)
 
                 Below are the available agents with their descriptions:
                 {participants}
-                your response should be in json format  with property "agentName": name of the agent and  "reason": "reason for termination.
+                
+                Your response should be in json format with property "agentName": name of the agent and "reason": "reason for selection based on workflow step".
                 """;
 
         protected override ValueTask<bool> ShouldTerminateAsync(IReadOnlyList<ChatMessage> history, CancellationToken cancellationToken = default)

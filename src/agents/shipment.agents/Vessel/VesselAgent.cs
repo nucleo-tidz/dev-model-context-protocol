@@ -16,15 +16,16 @@ namespace shipment.agents.Vessel
             {
                 ChatOptions = new ChatOptions()
                 {
-                    Instructions = @"You are an AI agent responsible for searching vessel between origin and destination.You will be provided with an origin city name and destination city name, 
+                    Instructions = @"You are an AI agent responsible for searching vessel between origin and destination and locking space on vessel.You will be provided with an origin city name and destination city name, 
                                   Do not assume or guess the origin or destination city name if it is not explicitly provided , Do not check capacity or generate booking that is not your job.
                                
-                               Your workflow includes one steps:
-                               1. Find vessel between origin and destination city name..",
+                               Your workflow includes two steps:
+                               1. Find vessel between origin and destination city name..
+                               2. Lock space on vessel for a given vessel ID.",
                     ToolMode = ChatToolMode.Auto,
                     Tools = [.. tools]
                 },
-                Description = "AI agent responsible for searching vessel between origin and destination",
+                Description = "AI agent responsible for searching vessel between origin and destination and also to lock space on vessel",
                 ChatHistoryProvider = new InMemoryChatHistoryProvider(),
                 Name = nameof(VesselAgent),
             });
