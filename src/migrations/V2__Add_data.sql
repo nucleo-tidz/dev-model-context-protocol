@@ -1,0 +1,1 @@
+insert into bookings values ('183','DKCPH','INMAA',getutcdate());
