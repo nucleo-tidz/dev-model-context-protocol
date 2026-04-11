@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11222.15
+VisualStudioVersion = 18.0.11222.15 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infrastructure", "src\infrastructure\infrastructure.csproj", "{AC4BC845-433D-4B65-A921-29F25001984E}"
 EndProject
@@ -25,6 +25,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "agent.invoker", "src\agent.invoker\agent.invoker.csproj", "{82EC2376-FAF5-42D6-9CFA-B8267D4C94A5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "converse", "src\converse\converse.csproj", "{9FC08461-D809-4944-AE44-7A02C06E9AB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgentHost", "src\AgentHost\AgentHost.csproj", "{EFF3B976-5ED1-40E3-815B-6F7702F87A0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +62,10 @@ Global
 		{9FC08461-D809-4944-AE44-7A02C06E9AB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FC08461-D809-4944-AE44-7A02C06E9AB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FC08461-D809-4944-AE44-7A02C06E9AB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFF3B976-5ED1-40E3-815B-6F7702F87A0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF3B976-5ED1-40E3-815B-6F7702F87A0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFF3B976-5ED1-40E3-815B-6F7702F87A0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFF3B976-5ED1-40E3-815B-6F7702F87A0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
